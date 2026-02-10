@@ -1,5 +1,5 @@
 [project]
-name = "docstrange"
+name = "docstrange-api"
 version = "0.0.1"
 description = "The official Python library for the docstrange API"
 dynamic = ["readme"]
