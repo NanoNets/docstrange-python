@@ -20,8 +20,4 @@ class PageClassification(BaseModel):
     """Explanation for the classification"""
 
     identified_category: Optional[str] = None
-    """
-    Specific document type identified by the model (e.g.,
-    'Invoice_Amazon_Electronics'). Always provided - contains a more detailed
-    classification than the category.
-    """
+    """Specific document type identified by the model."""

@@ -26,10 +26,7 @@ class ExtractStreamParams(TypedDict, total=False):
     """Custom extraction instructions"""
 
     enable_streaming: bool
-    """Enable real-time streaming.
-
-    If false, returns complete content via SSE batch mode.
-    """
+    """Enable real-time streaming."""
 
     file_base64: str
     """Base64-encoded file content"""

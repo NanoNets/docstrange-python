@@ -22,11 +22,11 @@ class TestChat:
         chat = client.chat.create_completion(
             messages=[
                 {
-                    "content": [{}, {}],
-                    "role": "user",
+                    "content": [{}],
+                    "role": "role",
                 }
             ],
-            model="nanonets/Nanonets-OCR-s",
+            model="model",
         )
         assert_matches_type(object, chat, path=["response"])
 
@@ -38,23 +38,17 @@ class TestChat:
                 {
                     "content": [
                         {
-                            "file_url": {"url": "https://example.com/doc.pdf"},
-                            "image_url": {"url": "url"},
-                            "text": "text",
-                            "type": "file_url",
-                        },
-                        {
                             "file_url": {"url": "url"},
                             "image_url": {"url": "url"},
-                            "text": "Extract the text from the document.",
-                            "type": "text",
-                        },
+                            "text": "text",
+                            "type": "type",
+                        }
                     ],
-                    "role": "user",
+                    "role": "role",
                 }
             ],
-            model="nanonets/Nanonets-OCR-s",
-            stream=False,
+            model="model",
+            stream=True,
         )
         assert_matches_type(object, chat, path=["response"])
 
@@ -64,11 +58,11 @@ class TestChat:
         response = client.chat.with_raw_response.create_completion(
             messages=[
                 {
-                    "content": [{}, {}],
-                    "role": "user",
+                    "content": [{}],
+                    "role": "role",
                 }
             ],
-            model="nanonets/Nanonets-OCR-s",
+            model="model",
         )
 
         assert response.is_closed is True
@@ -82,11 +76,11 @@ class TestChat:
         with client.chat.with_streaming_response.create_completion(
             messages=[
                 {
-                    "content": [{}, {}],
-                    "role": "user",
+                    "content": [{}],
+                    "role": "role",
                 }
             ],
-            model="nanonets/Nanonets-OCR-s",
+            model="model",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -108,11 +102,11 @@ class TestAsyncChat:
         chat = await async_client.chat.create_completion(
             messages=[
                 {
-                    "content": [{}, {}],
-                    "role": "user",
+                    "content": [{}],
+                    "role": "role",
                 }
             ],
-            model="nanonets/Nanonets-OCR-s",
+            model="model",
         )
         assert_matches_type(object, chat, path=["response"])
 
@@ -124,23 +118,17 @@ class TestAsyncChat:
                 {
                     "content": [
                         {
-                            "file_url": {"url": "https://example.com/doc.pdf"},
-                            "image_url": {"url": "url"},
-                            "text": "text",
-                            "type": "file_url",
-                        },
-                        {
                             "file_url": {"url": "url"},
                             "image_url": {"url": "url"},
-                            "text": "Extract the text from the document.",
-                            "type": "text",
-                        },
+                            "text": "text",
+                            "type": "type",
+                        }
                     ],
-                    "role": "user",
+                    "role": "role",
                 }
             ],
-            model="nanonets/Nanonets-OCR-s",
-            stream=False,
+            model="model",
+            stream=True,
         )
         assert_matches_type(object, chat, path=["response"])
 
@@ -150,11 +138,11 @@ class TestAsyncChat:
         response = await async_client.chat.with_raw_response.create_completion(
             messages=[
                 {
-                    "content": [{}, {}],
-                    "role": "user",
+                    "content": [{}],
+                    "role": "role",
                 }
             ],
-            model="nanonets/Nanonets-OCR-s",
+            model="model",
         )
 
         assert response.is_closed is True
@@ -168,11 +156,11 @@ class TestAsyncChat:
         async with async_client.chat.with_streaming_response.create_completion(
             messages=[
                 {
-                    "content": [{}, {}],
-                    "role": "user",
+                    "content": [{}],
+                    "role": "role",
                 }
             ],
-            model="nanonets/Nanonets-OCR-s",
+            model="model",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
