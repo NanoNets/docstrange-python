@@ -11,7 +11,10 @@ __all__ = ["ExtractSyncParams"]
 
 class ExtractSyncParams(TypedDict, total=False):
     file: Required[FileTypes]
-    """File to upload (PDF, Word, Excel, PowerPoint, images)"""
+    """File to upload (PDF, Word, Excel, PowerPoint, images).
+
+    Alternatively use file_url or file_base64.
+    """
 
     output_format: Required[str]
     """Output format(s): `markdown`, `html`, `json`, `csv`.
@@ -24,12 +27,6 @@ class ExtractSyncParams(TypedDict, total=False):
 
     custom_instructions: str
     """Custom extraction instructions (e.g., `Format dates as YYYY-MM-DD`)"""
-
-    file_base64: str
-    """Base64-encoded file content"""
-
-    file_url: str
-    """URL to download file from"""
 
     include_metadata: str
     """Comma-separated metadata: `bounding_boxes`, `confidence_score`"""

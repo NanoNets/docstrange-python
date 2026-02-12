@@ -75,8 +75,6 @@ class ExtractResource(SyncAPIResource):
         output_format: str,
         csv_options: str | Omit = omit,
         custom_instructions: str | Omit = omit,
-        file_base64: str | Omit = omit,
-        file_url: str | Omit = omit,
         include_metadata: str | Omit = omit,
         json_options: str | Omit = omit,
         prompt_mode: Literal["append", "replace"] | Omit = omit,
@@ -95,7 +93,8 @@ class ExtractResource(SyncAPIResource):
         Recommended for large documents (>50 pages).
 
         Args:
-          file: File to upload (PDF, Word, Excel, PowerPoint, images)
+          file: File to upload (PDF, Word, Excel, PowerPoint, images). Alternatively use
+              file_url or file_base64.
 
           output_format: Output format(s): `markdown`, `html`, `json`, `csv`. Comma-separate for multiple
               (e.g., `markdown,json`).
@@ -103,10 +102,6 @@ class ExtractResource(SyncAPIResource):
           csv_options: CSV extraction options (e.g., `table`)
 
           custom_instructions: Custom extraction instructions (e.g., `Format dates as YYYY-MM-DD`)
-
-          file_base64: Base64-encoded file content
-
-          file_url: URL to download file from
 
           include_metadata: Comma-separated metadata: `bounding_boxes`, `confidence_score`
 
@@ -135,8 +130,6 @@ class ExtractResource(SyncAPIResource):
                     "output_format": output_format,
                     "csv_options": csv_options,
                     "custom_instructions": custom_instructions,
-                    "file_base64": file_base64,
-                    "file_url": file_url,
                     "include_metadata": include_metadata,
                     "json_options": json_options,
                     "prompt_mode": prompt_mode,
@@ -310,8 +303,6 @@ class ExtractResource(SyncAPIResource):
         output_format: str,
         csv_options: str | Omit = omit,
         custom_instructions: str | Omit = omit,
-        file_base64: str | Omit = omit,
-        file_url: str | Omit = omit,
         include_metadata: str | Omit = omit,
         json_options: str | Omit = omit,
         prompt_mode: Literal["append", "replace"] | Omit = omit,
@@ -330,7 +321,8 @@ class ExtractResource(SyncAPIResource):
         Provide exactly one of: `file`, `file_url`, or `file_base64`.
 
         Args:
-          file: File to upload (PDF, Word, Excel, PowerPoint, images)
+          file: File to upload (PDF, Word, Excel, PowerPoint, images). Alternatively use
+              file_url or file_base64.
 
           output_format: Output format(s): `markdown`, `html`, `json`, `csv`. Comma-separate for multiple
               (e.g., `markdown,json`).
@@ -338,10 +330,6 @@ class ExtractResource(SyncAPIResource):
           csv_options: CSV extraction options (e.g., `table`)
 
           custom_instructions: Custom extraction instructions (e.g., `Format dates as YYYY-MM-DD`)
-
-          file_base64: Base64-encoded file content
-
-          file_url: URL to download file from
 
           include_metadata: Comma-separated metadata: `bounding_boxes`, `confidence_score`
 
@@ -370,8 +358,6 @@ class ExtractResource(SyncAPIResource):
                     "output_format": output_format,
                     "csv_options": csv_options,
                     "custom_instructions": custom_instructions,
-                    "file_base64": file_base64,
-                    "file_url": file_url,
                     "include_metadata": include_metadata,
                     "json_options": json_options,
                     "prompt_mode": prompt_mode,
@@ -416,8 +402,6 @@ class AsyncExtractResource(AsyncAPIResource):
         output_format: str,
         csv_options: str | Omit = omit,
         custom_instructions: str | Omit = omit,
-        file_base64: str | Omit = omit,
-        file_url: str | Omit = omit,
         include_metadata: str | Omit = omit,
         json_options: str | Omit = omit,
         prompt_mode: Literal["append", "replace"] | Omit = omit,
@@ -436,7 +420,8 @@ class AsyncExtractResource(AsyncAPIResource):
         Recommended for large documents (>50 pages).
 
         Args:
-          file: File to upload (PDF, Word, Excel, PowerPoint, images)
+          file: File to upload (PDF, Word, Excel, PowerPoint, images). Alternatively use
+              file_url or file_base64.
 
           output_format: Output format(s): `markdown`, `html`, `json`, `csv`. Comma-separate for multiple
               (e.g., `markdown,json`).
@@ -444,10 +429,6 @@ class AsyncExtractResource(AsyncAPIResource):
           csv_options: CSV extraction options (e.g., `table`)
 
           custom_instructions: Custom extraction instructions (e.g., `Format dates as YYYY-MM-DD`)
-
-          file_base64: Base64-encoded file content
-
-          file_url: URL to download file from
 
           include_metadata: Comma-separated metadata: `bounding_boxes`, `confidence_score`
 
@@ -476,8 +457,6 @@ class AsyncExtractResource(AsyncAPIResource):
                     "output_format": output_format,
                     "csv_options": csv_options,
                     "custom_instructions": custom_instructions,
-                    "file_base64": file_base64,
-                    "file_url": file_url,
                     "include_metadata": include_metadata,
                     "json_options": json_options,
                     "prompt_mode": prompt_mode,
@@ -651,8 +630,6 @@ class AsyncExtractResource(AsyncAPIResource):
         output_format: str,
         csv_options: str | Omit = omit,
         custom_instructions: str | Omit = omit,
-        file_base64: str | Omit = omit,
-        file_url: str | Omit = omit,
         include_metadata: str | Omit = omit,
         json_options: str | Omit = omit,
         prompt_mode: Literal["append", "replace"] | Omit = omit,
@@ -671,7 +648,8 @@ class AsyncExtractResource(AsyncAPIResource):
         Provide exactly one of: `file`, `file_url`, or `file_base64`.
 
         Args:
-          file: File to upload (PDF, Word, Excel, PowerPoint, images)
+          file: File to upload (PDF, Word, Excel, PowerPoint, images). Alternatively use
+              file_url or file_base64.
 
           output_format: Output format(s): `markdown`, `html`, `json`, `csv`. Comma-separate for multiple
               (e.g., `markdown,json`).
@@ -679,10 +657,6 @@ class AsyncExtractResource(AsyncAPIResource):
           csv_options: CSV extraction options (e.g., `table`)
 
           custom_instructions: Custom extraction instructions (e.g., `Format dates as YYYY-MM-DD`)
-
-          file_base64: Base64-encoded file content
-
-          file_url: URL to download file from
 
           include_metadata: Comma-separated metadata: `bounding_boxes`, `confidence_score`
 
@@ -711,8 +685,6 @@ class AsyncExtractResource(AsyncAPIResource):
                     "output_format": output_format,
                     "csv_options": csv_options,
                     "custom_instructions": custom_instructions,
-                    "file_base64": file_base64,
-                    "file_url": file_url,
                     "include_metadata": include_metadata,
                     "json_options": json_options,
                     "prompt_mode": prompt_mode,
