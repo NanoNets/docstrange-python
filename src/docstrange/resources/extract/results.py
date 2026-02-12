@@ -16,10 +16,10 @@ from ..._response import (
     async_to_raw_response_wrapper,
     async_to_streamed_response_wrapper,
 )
-from ..._base_client import make_request_options
+from ...pagination import SyncPageNumberPagination, AsyncPageNumberPagination
+from ..._base_client import AsyncPaginator, make_request_options
 from ...types.extract import result_list_params, result_retrieve_params
 from ...types.extract_response import ExtractResponse
-from ...types.extract.extraction_list_response import ExtractionListResponse
 
 __all__ = ["ResultsResource", "AsyncResultsResource"]
 
@@ -100,7 +100,7 @@ class ResultsResource(SyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> ExtractionListResponse:
+    ) -> SyncPageNumberPagination[ExtractResponse]:
         """
         List all extraction jobs for the authenticated user (paginated).
 
@@ -113,8 +113,9 @@ class ResultsResource(SyncAPIResource):
 
           timeout: Override the client-level default timeout for this request, in seconds
         """
-        return self._get(
+        return self._get_api_list(
             "/api/v1/extract/results",
+            page=SyncPageNumberPagination[ExtractResponse],
             options=make_request_options(
                 extra_headers=extra_headers,
                 extra_query=extra_query,
@@ -130,7 +131,7 @@ class ResultsResource(SyncAPIResource):
                     result_list_params.ResultListParams,
                 ),
             ),
-            cast_to=ExtractionListResponse,
+            model=ExtractResponse,
         )
 
 
@@ -196,7 +197,7 @@ class AsyncResultsResource(AsyncAPIResource):
             cast_to=ExtractResponse,
         )
 
-    async def list(
+    def list(
         self,
         *,
         page: int | Omit = omit,
@@ -210,7 +211,7 @@ class AsyncResultsResource(AsyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> ExtractionListResponse:
+    ) -> AsyncPaginator[ExtractResponse, AsyncPageNumberPagination[ExtractResponse]]:
         """
         List all extraction jobs for the authenticated user (paginated).
 
@@ -223,14 +224,15 @@ class AsyncResultsResource(AsyncAPIResource):
 
           timeout: Override the client-level default timeout for this request, in seconds
         """
-        return await self._get(
+        return self._get_api_list(
             "/api/v1/extract/results",
+            page=AsyncPageNumberPagination[ExtractResponse],
             options=make_request_options(
                 extra_headers=extra_headers,
                 extra_query=extra_query,
                 extra_body=extra_body,
                 timeout=timeout,
-                query=await async_maybe_transform(
+                query=maybe_transform(
                     {
                         "page": page,
                         "page_size": page_size,
@@ -240,7 +242,7 @@ class AsyncResultsResource(AsyncAPIResource):
                     result_list_params.ResultListParams,
                 ),
             ),
-            cast_to=ExtractionListResponse,
+            model=ExtractResponse,
         )
 
 
