@@ -9,7 +9,7 @@ import pytest
 
 from docstrange import Docstrange, AsyncDocstrange
 from tests.utils import assert_matches_type
-from docstrange.types import ClassifyResponse, BatchClassifyResponse
+from docstrange.types import ClassifyResponse
 
 base_url = os.environ.get("TEST_API_BASE_URL", "http://127.0.0.1:4010")
 
@@ -19,46 +19,9 @@ class TestClassify:
 
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
-    def test_method_batch(self, client: Docstrange) -> None:
-        classify = client.classify.batch(
-            categories='[{"name": "Invoice"}, {"name": "Contract"}, {"name": "Receipt"}]',
-            files=[b"raw file contents"],
-        )
-        assert_matches_type(BatchClassifyResponse, classify, path=["response"])
-
-    @pytest.mark.skip(reason="Prism tests are disabled")
-    @parametrize
-    def test_raw_response_batch(self, client: Docstrange) -> None:
-        response = client.classify.with_raw_response.batch(
-            categories='[{"name": "Invoice"}, {"name": "Contract"}, {"name": "Receipt"}]',
-            files=[b"raw file contents"],
-        )
-
-        assert response.is_closed is True
-        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
-        classify = response.parse()
-        assert_matches_type(BatchClassifyResponse, classify, path=["response"])
-
-    @pytest.mark.skip(reason="Prism tests are disabled")
-    @parametrize
-    def test_streaming_response_batch(self, client: Docstrange) -> None:
-        with client.classify.with_streaming_response.batch(
-            categories='[{"name": "Invoice"}, {"name": "Contract"}, {"name": "Receipt"}]',
-            files=[b"raw file contents"],
-        ) as response:
-            assert not response.is_closed
-            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
-
-            classify = response.parse()
-            assert_matches_type(BatchClassifyResponse, classify, path=["response"])
-
-        assert cast(Any, response.is_closed) is True
-
-    @pytest.mark.skip(reason="Prism tests are disabled")
-    @parametrize
     def test_method_sync(self, client: Docstrange) -> None:
         classify = client.classify.sync(
-            categories='[{"name": "Invoice", "description": "Bills and invoices"}, {"name": "Contract", "description": "Legal agreements"}]',
+            categories="categories",
             file=b"raw file contents",
         )
         assert_matches_type(ClassifyResponse, classify, path=["response"])
@@ -67,7 +30,7 @@ class TestClassify:
     @parametrize
     def test_raw_response_sync(self, client: Docstrange) -> None:
         response = client.classify.with_raw_response.sync(
-            categories='[{"name": "Invoice", "description": "Bills and invoices"}, {"name": "Contract", "description": "Legal agreements"}]',
+            categories="categories",
             file=b"raw file contents",
         )
 
@@ -80,7 +43,7 @@ class TestClassify:
     @parametrize
     def test_streaming_response_sync(self, client: Docstrange) -> None:
         with client.classify.with_streaming_response.sync(
-            categories='[{"name": "Invoice", "description": "Bills and invoices"}, {"name": "Contract", "description": "Legal agreements"}]',
+            categories="categories",
             file=b"raw file contents",
         ) as response:
             assert not response.is_closed
@@ -99,46 +62,9 @@ class TestAsyncClassify:
 
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
-    async def test_method_batch(self, async_client: AsyncDocstrange) -> None:
-        classify = await async_client.classify.batch(
-            categories='[{"name": "Invoice"}, {"name": "Contract"}, {"name": "Receipt"}]',
-            files=[b"raw file contents"],
-        )
-        assert_matches_type(BatchClassifyResponse, classify, path=["response"])
-
-    @pytest.mark.skip(reason="Prism tests are disabled")
-    @parametrize
-    async def test_raw_response_batch(self, async_client: AsyncDocstrange) -> None:
-        response = await async_client.classify.with_raw_response.batch(
-            categories='[{"name": "Invoice"}, {"name": "Contract"}, {"name": "Receipt"}]',
-            files=[b"raw file contents"],
-        )
-
-        assert response.is_closed is True
-        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
-        classify = await response.parse()
-        assert_matches_type(BatchClassifyResponse, classify, path=["response"])
-
-    @pytest.mark.skip(reason="Prism tests are disabled")
-    @parametrize
-    async def test_streaming_response_batch(self, async_client: AsyncDocstrange) -> None:
-        async with async_client.classify.with_streaming_response.batch(
-            categories='[{"name": "Invoice"}, {"name": "Contract"}, {"name": "Receipt"}]',
-            files=[b"raw file contents"],
-        ) as response:
-            assert not response.is_closed
-            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
-
-            classify = await response.parse()
-            assert_matches_type(BatchClassifyResponse, classify, path=["response"])
-
-        assert cast(Any, response.is_closed) is True
-
-    @pytest.mark.skip(reason="Prism tests are disabled")
-    @parametrize
     async def test_method_sync(self, async_client: AsyncDocstrange) -> None:
         classify = await async_client.classify.sync(
-            categories='[{"name": "Invoice", "description": "Bills and invoices"}, {"name": "Contract", "description": "Legal agreements"}]',
+            categories="categories",
             file=b"raw file contents",
         )
         assert_matches_type(ClassifyResponse, classify, path=["response"])
@@ -147,7 +73,7 @@ class TestAsyncClassify:
     @parametrize
     async def test_raw_response_sync(self, async_client: AsyncDocstrange) -> None:
         response = await async_client.classify.with_raw_response.sync(
-            categories='[{"name": "Invoice", "description": "Bills and invoices"}, {"name": "Contract", "description": "Legal agreements"}]',
+            categories="categories",
             file=b"raw file contents",
         )
 
@@ -160,7 +86,7 @@ class TestAsyncClassify:
     @parametrize
     async def test_streaming_response_sync(self, async_client: AsyncDocstrange) -> None:
         async with async_client.classify.with_streaming_response.sync(
-            categories='[{"name": "Invoice", "description": "Bills and invoices"}, {"name": "Contract", "description": "Legal agreements"}]',
+            categories="categories",
             file=b"raw file contents",
         ) as response:
             assert not response.is_closed
