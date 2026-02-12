@@ -75,6 +75,8 @@ class ExtractResource(SyncAPIResource):
         output_format: str,
         csv_options: str | Omit = omit,
         custom_instructions: str | Omit = omit,
+        file_base64: str | Omit = omit,
+        file_url: str | Omit = omit,
         include_metadata: str | Omit = omit,
         json_options: str | Omit = omit,
         prompt_mode: Literal["append", "replace"] | Omit = omit,
@@ -93,8 +95,7 @@ class ExtractResource(SyncAPIResource):
         Recommended for large documents (>50 pages).
 
         Args:
-          file: File to upload (PDF, Word, Excel, PowerPoint, images). Alternatively use
-              file_url or file_base64.
+          file: File to upload (PDF, Word, Excel, PowerPoint, images)
 
           output_format: Output format(s): `markdown`, `html`, `json`, `csv`. Comma-separate for multiple
               (e.g., `markdown,json`).
@@ -103,10 +104,13 @@ class ExtractResource(SyncAPIResource):
 
           custom_instructions: Custom extraction instructions (e.g., `Format dates as YYYY-MM-DD`)
 
+          file_base64: Base64-encoded file content
+
+          file_url: URL to download file from
+
           include_metadata: Comma-separated metadata: `bounding_boxes`, `confidence_score`
 
-          json_options: JSON extraction options. Values: `hierarchy_output`, `table-of-contents`, field
-              list `["field1", "field2"]`, or JSON schema `{...}`
+          json_options: JSON extraction options.
 
           prompt_mode: `append`: add to base prompt, `replace`: use only custom instructions
 
@@ -130,6 +134,8 @@ class ExtractResource(SyncAPIResource):
                     "output_format": output_format,
                     "csv_options": csv_options,
                     "custom_instructions": custom_instructions,
+                    "file_base64": file_base64,
+                    "file_url": file_url,
                     "include_metadata": include_metadata,
                     "json_options": json_options,
                     "prompt_mode": prompt_mode,
@@ -225,14 +231,6 @@ class ExtractResource(SyncAPIResource):
         Stream extraction results via Server-Sent Events (SSE) for real-time content
         delivery.
 
-        **Event Types:**
-
-        - `content`: Incremental content chunks (streaming mode)
-        - `complete`: Full content at once (batch mode)
-        - `done`: Final event with record_id and processing_time
-        - `error`: Error information
-        - `async_queued`: Large files queued for async processing
-
         Provide exactly one of: `file`, `file_url`, or `file_base64`.
 
         Args:
@@ -245,8 +243,7 @@ class ExtractResource(SyncAPIResource):
 
           custom_instructions: Custom extraction instructions
 
-          enable_streaming: Enable real-time streaming. If false, returns complete content via SSE batch
-              mode.
+          enable_streaming: Enable real-time streaming.
 
           file_base64: Base64-encoded file content
 
@@ -303,6 +300,8 @@ class ExtractResource(SyncAPIResource):
         output_format: str,
         csv_options: str | Omit = omit,
         custom_instructions: str | Omit = omit,
+        file_base64: str | Omit = omit,
+        file_url: str | Omit = omit,
         include_metadata: str | Omit = omit,
         json_options: str | Omit = omit,
         prompt_mode: Literal["append", "replace"] | Omit = omit,
@@ -321,8 +320,7 @@ class ExtractResource(SyncAPIResource):
         Provide exactly one of: `file`, `file_url`, or `file_base64`.
 
         Args:
-          file: File to upload (PDF, Word, Excel, PowerPoint, images). Alternatively use
-              file_url or file_base64.
+          file: File to upload (PDF, Word, Excel, PowerPoint, images)
 
           output_format: Output format(s): `markdown`, `html`, `json`, `csv`. Comma-separate for multiple
               (e.g., `markdown,json`).
@@ -331,10 +329,13 @@ class ExtractResource(SyncAPIResource):
 
           custom_instructions: Custom extraction instructions (e.g., `Format dates as YYYY-MM-DD`)
 
+          file_base64: Base64-encoded file content
+
+          file_url: URL to download file from
+
           include_metadata: Comma-separated metadata: `bounding_boxes`, `confidence_score`
 
-          json_options: JSON extraction options. Values: `hierarchy_output`, `table-of-contents`, field
-              list `["field1", "field2"]`, or JSON schema `{...}`
+          json_options: JSON extraction options.
 
           prompt_mode: `append`: add to base prompt, `replace`: use only custom instructions
 
@@ -358,6 +359,8 @@ class ExtractResource(SyncAPIResource):
                     "output_format": output_format,
                     "csv_options": csv_options,
                     "custom_instructions": custom_instructions,
+                    "file_base64": file_base64,
+                    "file_url": file_url,
                     "include_metadata": include_metadata,
                     "json_options": json_options,
                     "prompt_mode": prompt_mode,
@@ -402,6 +405,8 @@ class AsyncExtractResource(AsyncAPIResource):
         output_format: str,
         csv_options: str | Omit = omit,
         custom_instructions: str | Omit = omit,
+        file_base64: str | Omit = omit,
+        file_url: str | Omit = omit,
         include_metadata: str | Omit = omit,
         json_options: str | Omit = omit,
         prompt_mode: Literal["append", "replace"] | Omit = omit,
@@ -420,8 +425,7 @@ class AsyncExtractResource(AsyncAPIResource):
         Recommended for large documents (>50 pages).
 
         Args:
-          file: File to upload (PDF, Word, Excel, PowerPoint, images). Alternatively use
-              file_url or file_base64.
+          file: File to upload (PDF, Word, Excel, PowerPoint, images)
 
           output_format: Output format(s): `markdown`, `html`, `json`, `csv`. Comma-separate for multiple
               (e.g., `markdown,json`).
@@ -430,10 +434,13 @@ class AsyncExtractResource(AsyncAPIResource):
 
           custom_instructions: Custom extraction instructions (e.g., `Format dates as YYYY-MM-DD`)
 
+          file_base64: Base64-encoded file content
+
+          file_url: URL to download file from
+
           include_metadata: Comma-separated metadata: `bounding_boxes`, `confidence_score`
 
-          json_options: JSON extraction options. Values: `hierarchy_output`, `table-of-contents`, field
-              list `["field1", "field2"]`, or JSON schema `{...}`
+          json_options: JSON extraction options.
 
           prompt_mode: `append`: add to base prompt, `replace`: use only custom instructions
 
@@ -457,6 +464,8 @@ class AsyncExtractResource(AsyncAPIResource):
                     "output_format": output_format,
                     "csv_options": csv_options,
                     "custom_instructions": custom_instructions,
+                    "file_base64": file_base64,
+                    "file_url": file_url,
                     "include_metadata": include_metadata,
                     "json_options": json_options,
                     "prompt_mode": prompt_mode,
@@ -552,14 +561,6 @@ class AsyncExtractResource(AsyncAPIResource):
         Stream extraction results via Server-Sent Events (SSE) for real-time content
         delivery.
 
-        **Event Types:**
-
-        - `content`: Incremental content chunks (streaming mode)
-        - `complete`: Full content at once (batch mode)
-        - `done`: Final event with record_id and processing_time
-        - `error`: Error information
-        - `async_queued`: Large files queued for async processing
-
         Provide exactly one of: `file`, `file_url`, or `file_base64`.
 
         Args:
@@ -572,8 +573,7 @@ class AsyncExtractResource(AsyncAPIResource):
 
           custom_instructions: Custom extraction instructions
 
-          enable_streaming: Enable real-time streaming. If false, returns complete content via SSE batch
-              mode.
+          enable_streaming: Enable real-time streaming.
 
           file_base64: Base64-encoded file content
 
@@ -630,6 +630,8 @@ class AsyncExtractResource(AsyncAPIResource):
         output_format: str,
         csv_options: str | Omit = omit,
         custom_instructions: str | Omit = omit,
+        file_base64: str | Omit = omit,
+        file_url: str | Omit = omit,
         include_metadata: str | Omit = omit,
         json_options: str | Omit = omit,
         prompt_mode: Literal["append", "replace"] | Omit = omit,
@@ -648,8 +650,7 @@ class AsyncExtractResource(AsyncAPIResource):
         Provide exactly one of: `file`, `file_url`, or `file_base64`.
 
         Args:
-          file: File to upload (PDF, Word, Excel, PowerPoint, images). Alternatively use
-              file_url or file_base64.
+          file: File to upload (PDF, Word, Excel, PowerPoint, images)
 
           output_format: Output format(s): `markdown`, `html`, `json`, `csv`. Comma-separate for multiple
               (e.g., `markdown,json`).
@@ -658,10 +659,13 @@ class AsyncExtractResource(AsyncAPIResource):
 
           custom_instructions: Custom extraction instructions (e.g., `Format dates as YYYY-MM-DD`)
 
+          file_base64: Base64-encoded file content
+
+          file_url: URL to download file from
+
           include_metadata: Comma-separated metadata: `bounding_boxes`, `confidence_score`
 
-          json_options: JSON extraction options. Values: `hierarchy_output`, `table-of-contents`, field
-              list `["field1", "field2"]`, or JSON schema `{...}`
+          json_options: JSON extraction options.
 
           prompt_mode: `append`: add to base prompt, `replace`: use only custom instructions
 
@@ -685,6 +689,8 @@ class AsyncExtractResource(AsyncAPIResource):
                     "output_format": output_format,
                     "csv_options": csv_options,
                     "custom_instructions": custom_instructions,
+                    "file_base64": file_base64,
+                    "file_url": file_url,
                     "include_metadata": include_metadata,
                     "json_options": json_options,
                     "prompt_mode": prompt_mode,

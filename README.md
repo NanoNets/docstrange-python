@@ -188,7 +188,7 @@ client = Docstrange()
 
 client.extract.sync(
     file=Path("/path/to/file"),
-    output_format="markdown",
+    output_format="output_format",
 )
 ```
 

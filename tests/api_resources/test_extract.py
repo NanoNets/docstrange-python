@@ -25,7 +25,7 @@ class TestExtract:
     def test_method_async(self, client: Docstrange) -> None:
         extract = client.extract.async_(
             file=b"raw file contents",
-            output_format="markdown",
+            output_format="output_format",
         )
         assert_matches_type(ExtractResponse, extract, path=["response"])
 
@@ -34,11 +34,13 @@ class TestExtract:
     def test_method_async_with_all_params(self, client: Docstrange) -> None:
         extract = client.extract.async_(
             file=b"raw file contents",
-            output_format="markdown",
-            csv_options="",
-            custom_instructions="",
-            include_metadata="",
-            json_options="",
+            output_format="output_format",
+            csv_options="csv_options",
+            custom_instructions="custom_instructions",
+            file_base64="file_base64",
+            file_url="file_url",
+            include_metadata="include_metadata",
+            json_options="json_options",
             prompt_mode="append",
         )
         assert_matches_type(ExtractResponse, extract, path=["response"])
@@ -48,7 +50,7 @@ class TestExtract:
     def test_raw_response_async(self, client: Docstrange) -> None:
         response = client.extract.with_raw_response.async_(
             file=b"raw file contents",
-            output_format="markdown",
+            output_format="output_format",
         )
 
         assert response.is_closed is True
@@ -61,7 +63,7 @@ class TestExtract:
     def test_streaming_response_async(self, client: Docstrange) -> None:
         with client.extract.with_streaming_response.async_(
             file=b"raw file contents",
-            output_format="markdown",
+            output_format="output_format",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -76,7 +78,7 @@ class TestExtract:
     def test_method_batch(self, client: Docstrange) -> None:
         extract = client.extract.batch(
             files=[b"raw file contents"],
-            output_format="markdown",
+            output_format="output_format",
         )
         assert_matches_type(BatchExtractResponse, extract, path=["response"])
 
@@ -85,7 +87,7 @@ class TestExtract:
     def test_method_batch_with_all_params(self, client: Docstrange) -> None:
         extract = client.extract.batch(
             files=[b"raw file contents"],
-            output_format="markdown",
+            output_format="output_format",
             csv_options="csv_options",
             custom_instructions="custom_instructions",
             include_metadata="include_metadata",
@@ -99,7 +101,7 @@ class TestExtract:
     def test_raw_response_batch(self, client: Docstrange) -> None:
         response = client.extract.with_raw_response.batch(
             files=[b"raw file contents"],
-            output_format="markdown",
+            output_format="output_format",
         )
 
         assert response.is_closed is True
@@ -112,7 +114,7 @@ class TestExtract:
     def test_streaming_response_batch(self, client: Docstrange) -> None:
         with client.extract.with_streaming_response.batch(
             files=[b"raw file contents"],
-            output_format="markdown",
+            output_format="output_format",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -127,7 +129,7 @@ class TestExtract:
     def test_method_stream(self, client: Docstrange) -> None:
         extract_stream = client.extract.stream(
             file=b"raw file contents",
-            output_format="markdown",
+            output_format="output_format",
         )
         extract_stream.response.close()
 
@@ -136,14 +138,14 @@ class TestExtract:
     def test_method_stream_with_all_params(self, client: Docstrange) -> None:
         extract_stream = client.extract.stream(
             file=b"raw file contents",
-            output_format="markdown",
-            csv_options="",
-            custom_instructions="",
+            output_format="output_format",
+            csv_options="csv_options",
+            custom_instructions="custom_instructions",
             enable_streaming=True,
-            file_base64="",
-            file_url="",
-            include_metadata="",
-            json_options="",
+            file_base64="file_base64",
+            file_url="file_url",
+            include_metadata="include_metadata",
+            json_options="json_options",
             prompt_mode="append",
         )
         extract_stream.response.close()
@@ -153,7 +155,7 @@ class TestExtract:
     def test_raw_response_stream(self, client: Docstrange) -> None:
         response = client.extract.with_raw_response.stream(
             file=b"raw file contents",
-            output_format="markdown",
+            output_format="output_format",
         )
 
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -165,7 +167,7 @@ class TestExtract:
     def test_streaming_response_stream(self, client: Docstrange) -> None:
         with client.extract.with_streaming_response.stream(
             file=b"raw file contents",
-            output_format="markdown",
+            output_format="output_format",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -180,7 +182,7 @@ class TestExtract:
     def test_method_sync(self, client: Docstrange) -> None:
         extract = client.extract.sync(
             file=b"raw file contents",
-            output_format="markdown",
+            output_format="output_format",
         )
         assert_matches_type(ExtractResponse, extract, path=["response"])
 
@@ -189,11 +191,13 @@ class TestExtract:
     def test_method_sync_with_all_params(self, client: Docstrange) -> None:
         extract = client.extract.sync(
             file=b"raw file contents",
-            output_format="markdown",
-            csv_options="",
-            custom_instructions="",
-            include_metadata="",
-            json_options="",
+            output_format="output_format",
+            csv_options="csv_options",
+            custom_instructions="custom_instructions",
+            file_base64="file_base64",
+            file_url="file_url",
+            include_metadata="include_metadata",
+            json_options="json_options",
             prompt_mode="append",
         )
         assert_matches_type(ExtractResponse, extract, path=["response"])
@@ -203,7 +207,7 @@ class TestExtract:
     def test_raw_response_sync(self, client: Docstrange) -> None:
         response = client.extract.with_raw_response.sync(
             file=b"raw file contents",
-            output_format="markdown",
+            output_format="output_format",
         )
 
         assert response.is_closed is True
@@ -216,7 +220,7 @@ class TestExtract:
     def test_streaming_response_sync(self, client: Docstrange) -> None:
         with client.extract.with_streaming_response.sync(
             file=b"raw file contents",
-            output_format="markdown",
+            output_format="output_format",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -237,7 +241,7 @@ class TestAsyncExtract:
     async def test_method_async(self, async_client: AsyncDocstrange) -> None:
         extract = await async_client.extract.async_(
             file=b"raw file contents",
-            output_format="markdown",
+            output_format="output_format",
         )
         assert_matches_type(ExtractResponse, extract, path=["response"])
 
@@ -246,11 +250,13 @@ class TestAsyncExtract:
     async def test_method_async_with_all_params(self, async_client: AsyncDocstrange) -> None:
         extract = await async_client.extract.async_(
             file=b"raw file contents",
-            output_format="markdown",
-            csv_options="",
-            custom_instructions="",
-            include_metadata="",
-            json_options="",
+            output_format="output_format",
+            csv_options="csv_options",
+            custom_instructions="custom_instructions",
+            file_base64="file_base64",
+            file_url="file_url",
+            include_metadata="include_metadata",
+            json_options="json_options",
             prompt_mode="append",
         )
         assert_matches_type(ExtractResponse, extract, path=["response"])
@@ -260,7 +266,7 @@ class TestAsyncExtract:
     async def test_raw_response_async(self, async_client: AsyncDocstrange) -> None:
         response = await async_client.extract.with_raw_response.async_(
             file=b"raw file contents",
-            output_format="markdown",
+            output_format="output_format",
         )
 
         assert response.is_closed is True
@@ -273,7 +279,7 @@ class TestAsyncExtract:
     async def test_streaming_response_async(self, async_client: AsyncDocstrange) -> None:
         async with async_client.extract.with_streaming_response.async_(
             file=b"raw file contents",
-            output_format="markdown",
+            output_format="output_format",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -288,7 +294,7 @@ class TestAsyncExtract:
     async def test_method_batch(self, async_client: AsyncDocstrange) -> None:
         extract = await async_client.extract.batch(
             files=[b"raw file contents"],
-            output_format="markdown",
+            output_format="output_format",
         )
         assert_matches_type(BatchExtractResponse, extract, path=["response"])
 
@@ -297,7 +303,7 @@ class TestAsyncExtract:
     async def test_method_batch_with_all_params(self, async_client: AsyncDocstrange) -> None:
         extract = await async_client.extract.batch(
             files=[b"raw file contents"],
-            output_format="markdown",
+            output_format="output_format",
             csv_options="csv_options",
             custom_instructions="custom_instructions",
             include_metadata="include_metadata",
@@ -311,7 +317,7 @@ class TestAsyncExtract:
     async def test_raw_response_batch(self, async_client: AsyncDocstrange) -> None:
         response = await async_client.extract.with_raw_response.batch(
             files=[b"raw file contents"],
-            output_format="markdown",
+            output_format="output_format",
         )
 
         assert response.is_closed is True
@@ -324,7 +330,7 @@ class TestAsyncExtract:
     async def test_streaming_response_batch(self, async_client: AsyncDocstrange) -> None:
         async with async_client.extract.with_streaming_response.batch(
             files=[b"raw file contents"],
-            output_format="markdown",
+            output_format="output_format",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -339,7 +345,7 @@ class TestAsyncExtract:
     async def test_method_stream(self, async_client: AsyncDocstrange) -> None:
         extract_stream = await async_client.extract.stream(
             file=b"raw file contents",
-            output_format="markdown",
+            output_format="output_format",
         )
         await extract_stream.response.aclose()
 
@@ -348,14 +354,14 @@ class TestAsyncExtract:
     async def test_method_stream_with_all_params(self, async_client: AsyncDocstrange) -> None:
         extract_stream = await async_client.extract.stream(
             file=b"raw file contents",
-            output_format="markdown",
-            csv_options="",
-            custom_instructions="",
+            output_format="output_format",
+            csv_options="csv_options",
+            custom_instructions="custom_instructions",
             enable_streaming=True,
-            file_base64="",
-            file_url="",
-            include_metadata="",
-            json_options="",
+            file_base64="file_base64",
+            file_url="file_url",
+            include_metadata="include_metadata",
+            json_options="json_options",
             prompt_mode="append",
         )
         await extract_stream.response.aclose()
@@ -365,7 +371,7 @@ class TestAsyncExtract:
     async def test_raw_response_stream(self, async_client: AsyncDocstrange) -> None:
         response = await async_client.extract.with_raw_response.stream(
             file=b"raw file contents",
-            output_format="markdown",
+            output_format="output_format",
         )
 
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -377,7 +383,7 @@ class TestAsyncExtract:
     async def test_streaming_response_stream(self, async_client: AsyncDocstrange) -> None:
         async with async_client.extract.with_streaming_response.stream(
             file=b"raw file contents",
-            output_format="markdown",
+            output_format="output_format",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -392,7 +398,7 @@ class TestAsyncExtract:
     async def test_method_sync(self, async_client: AsyncDocstrange) -> None:
         extract = await async_client.extract.sync(
             file=b"raw file contents",
-            output_format="markdown",
+            output_format="output_format",
         )
         assert_matches_type(ExtractResponse, extract, path=["response"])
 
@@ -401,11 +407,13 @@ class TestAsyncExtract:
     async def test_method_sync_with_all_params(self, async_client: AsyncDocstrange) -> None:
         extract = await async_client.extract.sync(
             file=b"raw file contents",
-            output_format="markdown",
-            csv_options="",
-            custom_instructions="",
-            include_metadata="",
-            json_options="",
+            output_format="output_format",
+            csv_options="csv_options",
+            custom_instructions="custom_instructions",
+            file_base64="file_base64",
+            file_url="file_url",
+            include_metadata="include_metadata",
+            json_options="json_options",
             prompt_mode="append",
         )
         assert_matches_type(ExtractResponse, extract, path=["response"])
@@ -415,7 +423,7 @@ class TestAsyncExtract:
     async def test_raw_response_sync(self, async_client: AsyncDocstrange) -> None:
         response = await async_client.extract.with_raw_response.sync(
             file=b"raw file contents",
-            output_format="markdown",
+            output_format="output_format",
         )
 
         assert response.is_closed is True
@@ -428,7 +436,7 @@ class TestAsyncExtract:
     async def test_streaming_response_sync(self, async_client: AsyncDocstrange) -> None:
         async with async_client.extract.with_streaming_response.sync(
             file=b"raw file contents",
-            output_format="markdown",
+            output_format="output_format",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"

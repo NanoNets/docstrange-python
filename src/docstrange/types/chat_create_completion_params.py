@@ -39,7 +39,7 @@ class MessageContent(TypedDict, total=False):
 
 class Message(TypedDict, total=False):
     content: Required[Iterable[MessageContent]]
-    """Message content as an array of parts (text or file/image URLs)."""
+    """Message content as an array of parts."""
 
     role: Required[str]
     """Message role (system, user, assistant)"""

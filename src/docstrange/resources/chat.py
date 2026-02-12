@@ -55,20 +55,8 @@ class ChatResource(SyncAPIResource):
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> object:
-        """OpenAI-compatible chat completions endpoint.
-
-        Supports text messages and
-        file/image inputs via `image_url` or `file_url` parts.
-
-        **Limits and behavior:**
-
-        - The backend enforces a model context limit of ~20,000 tokens (text +
-          multimodal tokens).
-        - `file_url` inputs (e.g., PDFs) are expanded into per-page `image_url` parts
-          and embedded as data URLs.
-        - Inline data URLs are limited to ~64MB decoded size per item.
-
-        For large or multi-page documents, prefer `/api/v1/extract/*` endpoints.
+        """
+        OpenAI-compatible chat completions endpoint.
 
         Args:
           messages: Chat messages array
@@ -135,20 +123,8 @@ class AsyncChatResource(AsyncAPIResource):
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> object:
-        """OpenAI-compatible chat completions endpoint.
-
-        Supports text messages and
-        file/image inputs via `image_url` or `file_url` parts.
-
-        **Limits and behavior:**
-
-        - The backend enforces a model context limit of ~20,000 tokens (text +
-          multimodal tokens).
-        - `file_url` inputs (e.g., PDFs) are expanded into per-page `image_url` parts
-          and embedded as data URLs.
-        - Inline data URLs are limited to ~64MB decoded size per item.
-
-        For large or multi-page documents, prefer `/api/v1/extract/*` endpoints.
+        """
+        OpenAI-compatible chat completions endpoint.
 
         Args:
           messages: Chat messages array
