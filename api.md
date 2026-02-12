@@ -8,7 +8,7 @@ from docstrange.types import ExtractResponse
 
 Methods:
 
-- <code title="post /api/v1/extract/sync">client.extract.<a href="./src/docstrange/resources/extract/extract.py">sync</a>(\*\*<a href="src/docstrange/types/extract_sync_params.py">params</a>) -> <a href="./src/docstrange/types/extract_response.py">ExtractResponse</a></code>
+- <code title="post /api/v1/extract/sync">client.extract.<a href="./src/docstrange/resources/extract.py">sync</a>(\*\*<a href="src/docstrange/types/extract_sync_params.py">params</a>) -> <a href="./src/docstrange/types/extract_response.py">ExtractResponse</a></code>
 
 # Classify
 

@@ -32,8 +32,8 @@ from ._base_client import (
 
 if TYPE_CHECKING:
     from .resources import extract, classify
+    from .resources.extract import ExtractResource, AsyncExtractResource
     from .resources.classify import ClassifyResource, AsyncClassifyResource
-    from .resources.extract.extract import ExtractResource, AsyncExtractResource
 
 __all__ = [
     "Timeout",

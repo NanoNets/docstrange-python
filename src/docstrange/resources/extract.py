@@ -3,22 +3,23 @@
 from __future__ import annotations
 
 from typing import Mapping, cast
+from typing_extensions import Literal
 
 import httpx
 
-from ...types import extract_sync_params
-from ..._types import Body, Query, Headers, NotGiven, FileTypes, not_given
-from ..._utils import extract_files, maybe_transform, deepcopy_minimal, async_maybe_transform
-from ..._compat import cached_property
-from ..._resource import SyncAPIResource, AsyncAPIResource
-from ..._response import (
+from ..types import extract_sync_params
+from .._types import Body, Omit, Query, Headers, NotGiven, FileTypes, omit, not_given
+from .._utils import extract_files, maybe_transform, deepcopy_minimal, async_maybe_transform
+from .._compat import cached_property
+from .._resource import SyncAPIResource, AsyncAPIResource
+from .._response import (
     to_raw_response_wrapper,
     to_streamed_response_wrapper,
     async_to_raw_response_wrapper,
     async_to_streamed_response_wrapper,
 )
-from ..._base_client import make_request_options
-from ...types.extract_response import ExtractResponse
+from .._base_client import make_request_options
+from ..types.extract_response import ExtractResponse
 
 __all__ = ["ExtractResource", "AsyncExtractResource"]
 
@@ -48,6 +49,13 @@ class ExtractResource(SyncAPIResource):
         *,
         file: FileTypes,
         output_format: str,
+        csv_options: str | Omit = omit,
+        custom_instructions: str | Omit = omit,
+        file_base64: str | Omit = omit,
+        file_url: str | Omit = omit,
+        include_metadata: str | Omit = omit,
+        json_options: str | Omit = omit,
+        prompt_mode: Literal["append", "replace"] | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -59,9 +67,23 @@ class ExtractResource(SyncAPIResource):
         Process a document and return extracted content immediately.
 
         Args:
-          file: File to upload
+          file: File to upload (PDF, Word, Excel, PowerPoint, images)
 
-          output_format: Output format
+          output_format: Output format(s): markdown, html, json, csv.
+
+          csv_options: CSV extraction options
+
+          custom_instructions: Custom extraction instructions
+
+          file_base64: Base64-encoded file content
+
+          file_url: URL to download file from
+
+          include_metadata: Comma-separated metadata types
+
+          json_options: JSON extraction options
+
+          prompt_mode: append or replace
 
           extra_headers: Send extra headers
 
@@ -75,6 +97,13 @@ class ExtractResource(SyncAPIResource):
             {
                 "file": file,
                 "output_format": output_format,
+                "csv_options": csv_options,
+                "custom_instructions": custom_instructions,
+                "file_base64": file_base64,
+                "file_url": file_url,
+                "include_metadata": include_metadata,
+                "json_options": json_options,
+                "prompt_mode": prompt_mode,
             }
         )
         files = extract_files(cast(Mapping[str, object], body), paths=[["file"]])
@@ -118,6 +147,13 @@ class AsyncExtractResource(AsyncAPIResource):
         *,
         file: FileTypes,
         output_format: str,
+        csv_options: str | Omit = omit,
+        custom_instructions: str | Omit = omit,
+        file_base64: str | Omit = omit,
+        file_url: str | Omit = omit,
+        include_metadata: str | Omit = omit,
+        json_options: str | Omit = omit,
+        prompt_mode: Literal["append", "replace"] | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -129,9 +165,23 @@ class AsyncExtractResource(AsyncAPIResource):
         Process a document and return extracted content immediately.
 
         Args:
-          file: File to upload
+          file: File to upload (PDF, Word, Excel, PowerPoint, images)
 
-          output_format: Output format
+          output_format: Output format(s): markdown, html, json, csv.
+
+          csv_options: CSV extraction options
+
+          custom_instructions: Custom extraction instructions
+
+          file_base64: Base64-encoded file content
+
+          file_url: URL to download file from
+
+          include_metadata: Comma-separated metadata types
+
+          json_options: JSON extraction options
+
+          prompt_mode: append or replace
 
           extra_headers: Send extra headers
 
@@ -145,6 +195,13 @@ class AsyncExtractResource(AsyncAPIResource):
             {
                 "file": file,
                 "output_format": output_format,
+                "csv_options": csv_options,
+                "custom_instructions": custom_instructions,
+                "file_base64": file_base64,
+                "file_url": file_url,
+                "include_metadata": include_metadata,
+                "json_options": json_options,
+                "prompt_mode": prompt_mode,
             }
         )
         files = extract_files(cast(Mapping[str, object], body), paths=[["file"]])

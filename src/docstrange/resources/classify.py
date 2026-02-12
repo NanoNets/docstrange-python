@@ -59,7 +59,7 @@ class ClassifyResource(SyncAPIResource):
         Classify a single document.
 
         Args:
-          categories: JSON array of categories
+          categories: JSON array of category objects
 
           file: File to classify
 
@@ -129,7 +129,7 @@ class AsyncClassifyResource(AsyncAPIResource):
         Classify a single document.
 
         Args:
-          categories: JSON array of categories
+          categories: JSON array of category objects
 
           file: File to classify
 
