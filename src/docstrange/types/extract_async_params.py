@@ -6,10 +6,10 @@ from typing_extensions import Literal, Required, TypedDict
 
 from .._types import FileTypes
 
-__all__ = ["ExtractSyncParams"]
+__all__ = ["ExtractAsyncParams"]
 
 
-class ExtractSyncParams(TypedDict, total=False):
+class ExtractAsyncParams(TypedDict, total=False):
     file: Required[FileTypes]
     """File to upload (PDF, Word, Excel, PowerPoint, images)"""
 
