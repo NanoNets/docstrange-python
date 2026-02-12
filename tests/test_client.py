@@ -862,9 +862,7 @@ class TestDocstrange:
         respx_mock.post("/api/v1/extract/sync").mock(side_effect=httpx.TimeoutException("Test timeout error"))
 
         with pytest.raises(APITimeoutError):
-            client.extract.with_streaming_response.sync(
-                file=b"raw file contents", output_format="output_format"
-            ).__enter__()
+            client.extract.with_streaming_response.sync(file=b"raw file contents", output_format="markdown").__enter__()
 
         assert _get_open_connections(client) == 0
 
@@ -874,9 +872,7 @@ class TestDocstrange:
         respx_mock.post("/api/v1/extract/sync").mock(return_value=httpx.Response(500))
 
         with pytest.raises(APIStatusError):
-            client.extract.with_streaming_response.sync(
-                file=b"raw file contents", output_format="output_format"
-            ).__enter__()
+            client.extract.with_streaming_response.sync(file=b"raw file contents", output_format="markdown").__enter__()
         assert _get_open_connections(client) == 0
 
     @pytest.mark.parametrize("failures_before_success", [0, 2, 4])
@@ -905,7 +901,7 @@ class TestDocstrange:
 
         respx_mock.post("/api/v1/extract/sync").mock(side_effect=retry_handler)
 
-        response = client.extract.with_raw_response.sync(file=b"raw file contents", output_format="output_format")
+        response = client.extract.with_raw_response.sync(file=b"raw file contents", output_format="markdown")
 
         assert response.retries_taken == failures_before_success
         assert int(response.http_request.headers.get("x-stainless-retry-count")) == failures_before_success
@@ -930,7 +926,7 @@ class TestDocstrange:
         respx_mock.post("/api/v1/extract/sync").mock(side_effect=retry_handler)
 
         response = client.extract.with_raw_response.sync(
-            file=b"raw file contents", output_format="output_format", extra_headers={"x-stainless-retry-count": Omit()}
+            file=b"raw file contents", output_format="markdown", extra_headers={"x-stainless-retry-count": Omit()}
         )
 
         assert len(response.http_request.headers.get_list("x-stainless-retry-count")) == 0
@@ -955,7 +951,7 @@ class TestDocstrange:
         respx_mock.post("/api/v1/extract/sync").mock(side_effect=retry_handler)
 
         response = client.extract.with_raw_response.sync(
-            file=b"raw file contents", output_format="output_format", extra_headers={"x-stainless-retry-count": "42"}
+            file=b"raw file contents", output_format="markdown", extra_headers={"x-stainless-retry-count": "42"}
         )
 
         assert response.http_request.headers.get("x-stainless-retry-count") == "42"
@@ -1773,7 +1769,7 @@ class TestAsyncDocstrange:
 
         with pytest.raises(APITimeoutError):
             await async_client.extract.with_streaming_response.sync(
-                file=b"raw file contents", output_format="output_format"
+                file=b"raw file contents", output_format="markdown"
             ).__aenter__()
 
         assert _get_open_connections(async_client) == 0
@@ -1787,7 +1783,7 @@ class TestAsyncDocstrange:
 
         with pytest.raises(APIStatusError):
             await async_client.extract.with_streaming_response.sync(
-                file=b"raw file contents", output_format="output_format"
+                file=b"raw file contents", output_format="markdown"
             ).__aenter__()
         assert _get_open_connections(async_client) == 0
 
@@ -1817,7 +1813,7 @@ class TestAsyncDocstrange:
 
         respx_mock.post("/api/v1/extract/sync").mock(side_effect=retry_handler)
 
-        response = await client.extract.with_raw_response.sync(file=b"raw file contents", output_format="output_format")
+        response = await client.extract.with_raw_response.sync(file=b"raw file contents", output_format="markdown")
 
         assert response.retries_taken == failures_before_success
         assert int(response.http_request.headers.get("x-stainless-retry-count")) == failures_before_success
@@ -1842,7 +1838,7 @@ class TestAsyncDocstrange:
         respx_mock.post("/api/v1/extract/sync").mock(side_effect=retry_handler)
 
         response = await client.extract.with_raw_response.sync(
-            file=b"raw file contents", output_format="output_format", extra_headers={"x-stainless-retry-count": Omit()}
+            file=b"raw file contents", output_format="markdown", extra_headers={"x-stainless-retry-count": Omit()}
         )
 
         assert len(response.http_request.headers.get_list("x-stainless-retry-count")) == 0
@@ -1867,7 +1863,7 @@ class TestAsyncDocstrange:
         respx_mock.post("/api/v1/extract/sync").mock(side_effect=retry_handler)
 
         response = await client.extract.with_raw_response.sync(
-            file=b"raw file contents", output_format="output_format", extra_headers={"x-stainless-retry-count": "42"}
+            file=b"raw file contents", output_format="markdown", extra_headers={"x-stainless-retry-count": "42"}
         )
 
         assert response.http_request.headers.get("x-stainless-retry-count") == "42"

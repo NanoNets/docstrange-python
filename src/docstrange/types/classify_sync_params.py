@@ -11,7 +11,7 @@ __all__ = ["ClassifySyncParams"]
 
 class ClassifySyncParams(TypedDict, total=False):
     categories: Required[str]
-    """JSON array of categories"""
+    """JSON array of category objects"""
 
     file: Required[FileTypes]
     """File to classify"""
