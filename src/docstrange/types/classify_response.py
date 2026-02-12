@@ -2,13 +2,13 @@
 
 from typing import Optional
 
-from ...._models import BaseModel
+from .._models import BaseModel
 from .file_classification_result import FileClassificationResult
 
-__all__ = ["ClassifySyncResponse"]
+__all__ = ["ClassifyResponse"]
 
 
-class ClassifySyncResponse(BaseModel):
+class ClassifyResponse(BaseModel):
     message: str
 
     success: bool

@@ -2,13 +2,13 @@
 
 from typing import List
 
-from ...._models import BaseModel
+from .._models import BaseModel
 from .extract_response import ExtractResponse
 
-__all__ = ["ExtractBatchResponse"]
+__all__ = ["BatchExtractResponse"]
 
 
-class ExtractBatchResponse(BaseModel):
+class BatchExtractResponse(BaseModel):
     accepted_files: int
 
     batch_id: str

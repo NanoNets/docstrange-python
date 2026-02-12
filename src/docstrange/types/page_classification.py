@@ -1,13 +1,13 @@
 # File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-from typing import List, Optional
+from typing import Optional
 
-from ...._models import BaseModel
+from .._models import BaseModel
 
-__all__ = ["FileClassificationResult", "Page"]
+__all__ = ["PageClassification"]
 
 
-class Page(BaseModel):
+class PageClassification(BaseModel):
     category: str
     """Matched category name or 'Other' if no match"""
 
@@ -25,19 +25,3 @@ class Page(BaseModel):
     'Invoice_Amazon_Electronics'). Always provided - contains a more detailed
     classification than the category.
     """
-
-
-class FileClassificationResult(BaseModel):
-    filename: str
-
-    pages: List[Page]
-
-    total_pages: int
-
-    error: Optional[str] = None
-
-    processing_time: Optional[float] = None
-    """Time in seconds"""
-
-    record_id: Optional[str] = None
-    """Record ID for polling results"""

@@ -4,12 +4,12 @@ from __future__ import annotations
 
 from typing_extensions import Literal, Required, TypedDict
 
-from ...._types import FileTypes
+from .._types import FileTypes
 
-__all__ = ["ExtractAsyncParams"]
+__all__ = ["ExtractSyncParams"]
 
 
-class ExtractAsyncParams(TypedDict, total=False):
+class ExtractSyncParams(TypedDict, total=False):
     output_format: Required[str]
     """Output format(s): `markdown`, `html`, `json`, `csv`.
 

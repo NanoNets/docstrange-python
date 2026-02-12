@@ -4,24 +4,10 @@ from typing import Optional
 from datetime import datetime
 from typing_extensions import Literal
 
-from pydantic import Field as FieldInfo
+from .._models import BaseModel
+from .extraction_result import ExtractionResult
 
-from ...._models import BaseModel
-from .extraction_format_result import ExtractionFormatResult
-
-__all__ = ["ExtractResponse", "Result"]
-
-
-class Result(BaseModel):
-    """Results by format (only requested formats populated)"""
-
-    csv: Optional[ExtractionFormatResult] = None
-
-    html: Optional[ExtractionFormatResult] = None
-
-    json_: Optional[ExtractionFormatResult] = FieldInfo(alias="json", default=None)
-
-    markdown: Optional[ExtractionFormatResult] = None
+__all__ = ["ExtractResponse"]
 
 
 class ExtractResponse(BaseModel):
@@ -48,5 +34,5 @@ class ExtractResponse(BaseModel):
     processing_time: Optional[float] = None
     """Time in seconds"""
 
-    result: Optional[Result] = None
+    result: Optional[ExtractionResult] = None
     """Results by format (only requested formats populated)"""

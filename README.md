@@ -11,7 +11,7 @@ It is generated with [Stainless](https://www.stainless.com/).
 
 ## Documentation
 
-The full API of this library can be found in [api.md](api.md).
+The REST API documentation can be found on [docs.nanonets.com](https://docs.nanonets.com). The full API of this library can be found in [api.md](api.md).
 
 ## Installation
 
@@ -32,7 +32,7 @@ client = Docstrange(
     api_key=os.environ.get("DOCSTRANGE_API_KEY"),  # This is the default and can be omitted
 )
 
-extract_response = client.api.v1.extract.sync(
+extract_response = client.extract.sync(
     output_format="markdown",
 )
 print(extract_response.record_id)
@@ -58,7 +58,7 @@ client = AsyncDocstrange(
 
 
 async def main() -> None:
-    extract_response = await client.api.v1.extract.sync(
+    extract_response = await client.extract.sync(
         output_format="markdown",
     )
     print(extract_response.record_id)
@@ -94,7 +94,7 @@ async def main() -> None:
         api_key=os.environ.get("DOCSTRANGE_API_KEY"),  # This is the default and can be omitted
         http_client=DefaultAioHttpClient(),
     ) as client:
-        extract_response = await client.api.v1.extract.sync(
+        extract_response = await client.extract.sync(
             output_format="markdown",
         )
         print(extract_response.record_id)
@@ -122,7 +122,7 @@ from docstrange import Docstrange
 
 client = Docstrange()
 
-client.api.v1.extract.sync(
+client.extract.sync(
     output_format="markdown",
     file=Path("/path/to/file"),
 )
@@ -146,7 +146,7 @@ from docstrange import Docstrange
 client = Docstrange()
 
 try:
-    client.api.v1.extract.sync(
+    client.extract.sync(
         output_format="markdown",
     )
 except docstrange.APIConnectionError as e:
@@ -191,7 +191,7 @@ client = Docstrange(
 )
 
 # Or, configure per-request:
-client.with_options(max_retries=5).api.v1.extract.sync(
+client.with_options(max_retries=5).extract.sync(
     output_format="markdown",
 )
 ```
@@ -216,7 +216,7 @@ client = Docstrange(
 )
 
 # Override per-request:
-client.with_options(timeout=5.0).api.v1.extract.sync(
+client.with_options(timeout=5.0).extract.sync(
     output_format="markdown",
 )
 ```
@@ -259,12 +259,12 @@ The "raw" Response object can be accessed by prefixing `.with_raw_response.` to 
 from docstrange import Docstrange
 
 client = Docstrange()
-response = client.api.v1.extract.with_raw_response.sync(
+response = client.extract.with_raw_response.sync(
     output_format="markdown",
 )
 print(response.headers.get('X-My-Header'))
 
-extract = response.parse()  # get the object that `api.v1.extract.sync()` would have returned
+extract = response.parse()  # get the object that `extract.sync()` would have returned
 print(extract.record_id)
 ```
 
@@ -279,7 +279,7 @@ The above interface eagerly reads the full response body when you make the reque
 To stream the response body, use `.with_streaming_response` instead, which requires a context manager and only reads the response body once you call `.read()`, `.text()`, `.json()`, `.iter_bytes()`, `.iter_text()`, `.iter_lines()` or `.parse()`. In the async client, these are async methods.
 
 ```python
-with client.api.v1.extract.with_streaming_response.sync(
+with client.extract.with_streaming_response.sync(
     output_format="markdown",
 ) as response:
     print(response.headers.get("X-My-Header"))

@@ -6,20 +6,20 @@ from typing_extensions import Literal
 
 import httpx
 
-from ....._types import Body, Omit, Query, Headers, NotGiven, omit, not_given
-from ....._utils import maybe_transform, async_maybe_transform
-from ....._compat import cached_property
-from ....._resource import SyncAPIResource, AsyncAPIResource
-from ....._response import (
+from ..._types import Body, Omit, Query, Headers, NotGiven, omit, not_given
+from ..._utils import maybe_transform, async_maybe_transform
+from ..._compat import cached_property
+from ..._resource import SyncAPIResource, AsyncAPIResource
+from ..._response import (
     to_raw_response_wrapper,
     to_streamed_response_wrapper,
     async_to_raw_response_wrapper,
     async_to_streamed_response_wrapper,
 )
-from ....._base_client import make_request_options
-from .....types.api.v1.extract import result_list_params, result_retrieve_params
-from .....types.api.v1.extract_response import ExtractResponse
-from .....types.api.v1.extract.result_list_response import ResultListResponse
+from ..._base_client import make_request_options
+from ...types.extract import result_list_params, result_retrieve_params
+from ...types.extract_response import ExtractResponse
+from ...types.extract.extraction_list_response import ExtractionListResponse
 
 __all__ = ["ResultsResource", "AsyncResultsResource"]
 
@@ -100,7 +100,7 @@ class ResultsResource(SyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> ResultListResponse:
+    ) -> ExtractionListResponse:
         """
         List all extraction jobs for the authenticated user (paginated).
 
@@ -130,7 +130,7 @@ class ResultsResource(SyncAPIResource):
                     result_list_params.ResultListParams,
                 ),
             ),
-            cast_to=ResultListResponse,
+            cast_to=ExtractionListResponse,
         )
 
 
@@ -210,7 +210,7 @@ class AsyncResultsResource(AsyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> ResultListResponse:
+    ) -> ExtractionListResponse:
         """
         List all extraction jobs for the authenticated user (paginated).
 
@@ -240,7 +240,7 @@ class AsyncResultsResource(AsyncAPIResource):
                     result_list_params.ResultListParams,
                 ),
             ),
-            cast_to=ResultListResponse,
+            cast_to=ExtractionListResponse,
         )
 
 
