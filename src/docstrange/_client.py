@@ -31,8 +31,7 @@ from ._base_client import (
 )
 
 if TYPE_CHECKING:
-    from .resources import chat, extract, classify
-    from .resources.chat import ChatResource, AsyncChatResource
+    from .resources import extract, classify
     from .resources.classify import ClassifyResource, AsyncClassifyResource
     from .resources.extract.extract import ExtractResource, AsyncExtractResource
 
@@ -114,12 +113,6 @@ class Docstrange(SyncAPIClient):
         from .resources.classify import ClassifyResource
 
         return ClassifyResource(self)
-
-    @cached_property
-    def chat(self) -> ChatResource:
-        from .resources.chat import ChatResource
-
-        return ChatResource(self)
 
     @cached_property
     def with_raw_response(self) -> DocstrangeWithRawResponse:
@@ -302,12 +295,6 @@ class AsyncDocstrange(AsyncAPIClient):
         return AsyncClassifyResource(self)
 
     @cached_property
-    def chat(self) -> AsyncChatResource:
-        from .resources.chat import AsyncChatResource
-
-        return AsyncChatResource(self)
-
-    @cached_property
     def with_raw_response(self) -> AsyncDocstrangeWithRawResponse:
         return AsyncDocstrangeWithRawResponse(self)
 
@@ -438,12 +425,6 @@ class DocstrangeWithRawResponse:
 
         return ClassifyResourceWithRawResponse(self._client.classify)
 
-    @cached_property
-    def chat(self) -> chat.ChatResourceWithRawResponse:
-        from .resources.chat import ChatResourceWithRawResponse
-
-        return ChatResourceWithRawResponse(self._client.chat)
-
 
 class AsyncDocstrangeWithRawResponse:
     _client: AsyncDocstrange
@@ -462,12 +443,6 @@ class AsyncDocstrangeWithRawResponse:
         from .resources.classify import AsyncClassifyResourceWithRawResponse
 
         return AsyncClassifyResourceWithRawResponse(self._client.classify)
-
-    @cached_property
-    def chat(self) -> chat.AsyncChatResourceWithRawResponse:
-        from .resources.chat import AsyncChatResourceWithRawResponse
-
-        return AsyncChatResourceWithRawResponse(self._client.chat)
 
 
 class DocstrangeWithStreamedResponse:
@@ -488,12 +463,6 @@ class DocstrangeWithStreamedResponse:
 
         return ClassifyResourceWithStreamingResponse(self._client.classify)
 
-    @cached_property
-    def chat(self) -> chat.ChatResourceWithStreamingResponse:
-        from .resources.chat import ChatResourceWithStreamingResponse
-
-        return ChatResourceWithStreamingResponse(self._client.chat)
-
 
 class AsyncDocstrangeWithStreamedResponse:
     _client: AsyncDocstrange
@@ -512,12 +481,6 @@ class AsyncDocstrangeWithStreamedResponse:
         from .resources.classify import AsyncClassifyResourceWithStreamingResponse
 
         return AsyncClassifyResourceWithStreamingResponse(self._client.classify)
-
-    @cached_property
-    def chat(self) -> chat.AsyncChatResourceWithStreamingResponse:
-        from .resources.chat import AsyncChatResourceWithStreamingResponse
-
-        return AsyncChatResourceWithStreamingResponse(self._client.chat)
 
 
 Client = Docstrange
