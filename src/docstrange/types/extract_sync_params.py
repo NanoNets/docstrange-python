@@ -35,3 +35,4 @@ class ExtractSyncParams(TypedDict, total=False):
     """JSON extraction options"""
 
     prompt_mode: Literal["append", "replace"]
+    """append or replace"""
