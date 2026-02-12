@@ -1,14 +1,13 @@
 # File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-from typing import List, Optional
+from typing import Optional
 
-from ....._models import BaseModel
-from ..extract_response import ExtractResponse
+from ..._models import BaseModel
 
-__all__ = ["ResultListResponse", "Pagination"]
+__all__ = ["PaginationInfo"]
 
 
-class Pagination(BaseModel):
+class PaginationInfo(BaseModel):
     has_next: Optional[bool] = None
 
     has_previous: Optional[bool] = None
@@ -20,11 +19,3 @@ class Pagination(BaseModel):
     total_count: Optional[int] = None
 
     total_pages: Optional[int] = None
-
-
-class ResultListResponse(BaseModel):
-    pagination: Pagination
-
-    results: List[ExtractResponse]
-
-    success: bool

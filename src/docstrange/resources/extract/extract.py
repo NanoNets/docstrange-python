@@ -2,11 +2,11 @@
 
 from __future__ import annotations
 
-from typing import Mapping, cast
 from typing_extensions import Literal
 
 import httpx
 
+from ...types import extract_sync_params, extract_async_params, extract_batch_params, extract_stream_params
 from .results import (
     ResultsResource,
     AsyncResultsResource,
@@ -15,7 +15,7 @@ from .results import (
     ResultsResourceWithStreamingResponse,
     AsyncResultsResourceWithStreamingResponse,
 )
-from ....._types import (
+from ..._types import (
     Body,
     Omit,
     Query,
@@ -26,21 +26,20 @@ from ....._types import (
     omit,
     not_given,
 )
-from ....._utils import extract_files, maybe_transform, deepcopy_minimal, async_maybe_transform
-from ....._compat import cached_property
-from ....._resource import SyncAPIResource, AsyncAPIResource
-from ....._response import (
+from ..._utils import maybe_transform, async_maybe_transform
+from ..._compat import cached_property
+from ..._resource import SyncAPIResource, AsyncAPIResource
+from ..._response import (
     to_raw_response_wrapper,
     to_streamed_response_wrapper,
     async_to_raw_response_wrapper,
     async_to_streamed_response_wrapper,
 )
-from ....._streaming import Stream, AsyncStream
-from ....._base_client import make_request_options
-from .....types.api.v1 import extract_sync_params, extract_async_params, extract_batch_params, extract_stream_params
-from .....types.api.v1.extract_response import ExtractResponse
-from .....types.api.v1.extract_batch_response import ExtractBatchResponse
-from .....types.api.v1.extract_stream_response import ExtractStreamResponse
+from ..._streaming import Stream, AsyncStream
+from ..._base_client import make_request_options
+from ...types.extract_response import ExtractResponse
+from ...types.batch_extract_response import BatchExtractResponse
+from ...types.extract_stream_response import ExtractStreamResponse
 
 __all__ = ["ExtractResource", "AsyncExtractResource"]
 
@@ -166,7 +165,7 @@ class ExtractResource(SyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> ExtractBatchResponse:
+    ) -> BatchExtractResponse:
         """Process multiple files asynchronously (max 50 files).
 
         All files share the same
@@ -185,30 +184,28 @@ class ExtractResource(SyncAPIResource):
 
           timeout: Override the client-level default timeout for this request, in seconds
         """
-        body = deepcopy_minimal(
-            {
-                "files": files,
-                "output_format": output_format,
-                "csv_options": csv_options,
-                "custom_instructions": custom_instructions,
-                "include_metadata": include_metadata,
-                "json_options": json_options,
-                "prompt_mode": prompt_mode,
-            }
-        )
-        extracted_files = extract_files(cast(Mapping[str, object], body), paths=[["files", "<array>"]])
         # It should be noted that the actual Content-Type header that will be
         # sent to the server will contain a `boundary` parameter, e.g.
         # multipart/form-data; boundary=---abc--
         extra_headers = {"Content-Type": "multipart/form-data", **(extra_headers or {})}
         return self._post(
             "/api/v1/extract/batch",
-            body=maybe_transform(body, extract_batch_params.ExtractBatchParams),
-            files=extracted_files,
+            body=maybe_transform(
+                {
+                    "files": files,
+                    "output_format": output_format,
+                    "csv_options": csv_options,
+                    "custom_instructions": custom_instructions,
+                    "include_metadata": include_metadata,
+                    "json_options": json_options,
+                    "prompt_mode": prompt_mode,
+                },
+                extract_batch_params.ExtractBatchParams,
+            ),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
-            cast_to=ExtractBatchResponse,
+            cast_to=BatchExtractResponse,
         )
 
     def stream(
@@ -277,29 +274,27 @@ class ExtractResource(SyncAPIResource):
           timeout: Override the client-level default timeout for this request, in seconds
         """
         extra_headers = {"Accept": "text/event-stream", **(extra_headers or {})}
-        body = deepcopy_minimal(
-            {
-                "output_format": output_format,
-                "csv_options": csv_options,
-                "custom_instructions": custom_instructions,
-                "enable_streaming": enable_streaming,
-                "file": file,
-                "file_base64": file_base64,
-                "file_url": file_url,
-                "include_metadata": include_metadata,
-                "json_options": json_options,
-                "prompt_mode": prompt_mode,
-            }
-        )
-        files = extract_files(cast(Mapping[str, object], body), paths=[["file"]])
         # It should be noted that the actual Content-Type header that will be
         # sent to the server will contain a `boundary` parameter, e.g.
         # multipart/form-data; boundary=---abc--
         extra_headers = {"Content-Type": "multipart/form-data", **(extra_headers or {})}
         return self._post(
             "/api/v1/extract/stream",
-            body=maybe_transform(body, extract_stream_params.ExtractStreamParams),
-            files=files,
+            body=maybe_transform(
+                {
+                    "output_format": output_format,
+                    "csv_options": csv_options,
+                    "custom_instructions": custom_instructions,
+                    "enable_streaming": enable_streaming,
+                    "file": file,
+                    "file_base64": file_base64,
+                    "file_url": file_url,
+                    "include_metadata": include_metadata,
+                    "json_options": json_options,
+                    "prompt_mode": prompt_mode,
+                },
+                extract_stream_params.ExtractStreamParams,
+            ),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
@@ -511,7 +506,7 @@ class AsyncExtractResource(AsyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> ExtractBatchResponse:
+    ) -> BatchExtractResponse:
         """Process multiple files asynchronously (max 50 files).
 
         All files share the same
@@ -530,30 +525,28 @@ class AsyncExtractResource(AsyncAPIResource):
 
           timeout: Override the client-level default timeout for this request, in seconds
         """
-        body = deepcopy_minimal(
-            {
-                "files": files,
-                "output_format": output_format,
-                "csv_options": csv_options,
-                "custom_instructions": custom_instructions,
-                "include_metadata": include_metadata,
-                "json_options": json_options,
-                "prompt_mode": prompt_mode,
-            }
-        )
-        extracted_files = extract_files(cast(Mapping[str, object], body), paths=[["files", "<array>"]])
         # It should be noted that the actual Content-Type header that will be
         # sent to the server will contain a `boundary` parameter, e.g.
         # multipart/form-data; boundary=---abc--
         extra_headers = {"Content-Type": "multipart/form-data", **(extra_headers or {})}
         return await self._post(
             "/api/v1/extract/batch",
-            body=await async_maybe_transform(body, extract_batch_params.ExtractBatchParams),
-            files=extracted_files,
+            body=await async_maybe_transform(
+                {
+                    "files": files,
+                    "output_format": output_format,
+                    "csv_options": csv_options,
+                    "custom_instructions": custom_instructions,
+                    "include_metadata": include_metadata,
+                    "json_options": json_options,
+                    "prompt_mode": prompt_mode,
+                },
+                extract_batch_params.ExtractBatchParams,
+            ),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
-            cast_to=ExtractBatchResponse,
+            cast_to=BatchExtractResponse,
         )
 
     async def stream(
@@ -622,29 +615,27 @@ class AsyncExtractResource(AsyncAPIResource):
           timeout: Override the client-level default timeout for this request, in seconds
         """
         extra_headers = {"Accept": "text/event-stream", **(extra_headers or {})}
-        body = deepcopy_minimal(
-            {
-                "output_format": output_format,
-                "csv_options": csv_options,
-                "custom_instructions": custom_instructions,
-                "enable_streaming": enable_streaming,
-                "file": file,
-                "file_base64": file_base64,
-                "file_url": file_url,
-                "include_metadata": include_metadata,
-                "json_options": json_options,
-                "prompt_mode": prompt_mode,
-            }
-        )
-        files = extract_files(cast(Mapping[str, object], body), paths=[["file"]])
         # It should be noted that the actual Content-Type header that will be
         # sent to the server will contain a `boundary` parameter, e.g.
         # multipart/form-data; boundary=---abc--
         extra_headers = {"Content-Type": "multipart/form-data", **(extra_headers or {})}
         return await self._post(
             "/api/v1/extract/stream",
-            body=await async_maybe_transform(body, extract_stream_params.ExtractStreamParams),
-            files=files,
+            body=await async_maybe_transform(
+                {
+                    "output_format": output_format,
+                    "csv_options": csv_options,
+                    "custom_instructions": custom_instructions,
+                    "enable_streaming": enable_streaming,
+                    "file": file,
+                    "file_base64": file_base64,
+                    "file_url": file_url,
+                    "include_metadata": include_metadata,
+                    "json_options": json_options,
+                    "prompt_mode": prompt_mode,
+                },
+                extract_stream_params.ExtractStreamParams,
+            ),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),

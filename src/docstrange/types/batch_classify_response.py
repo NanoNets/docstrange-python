@@ -2,13 +2,13 @@
 
 from typing import List
 
-from ...._models import BaseModel
+from .._models import BaseModel
 from .file_classification_result import FileClassificationResult
 
-__all__ = ["ClassifyBatchResponse"]
+__all__ = ["BatchClassifyResponse"]
 
 
-class ClassifyBatchResponse(BaseModel):
+class BatchClassifyResponse(BaseModel):
     batch_id: str
 
     failed_files: int

@@ -2,32 +2,22 @@
 
 from __future__ import annotations
 
-from typing import Mapping, cast
-
 import httpx
 
-from ...._types import (
-    Body,
-    Query,
-    Headers,
-    NotGiven,
-    FileTypes,
-    SequenceNotStr,
-    not_given,
-)
-from ...._utils import extract_files, maybe_transform, deepcopy_minimal, async_maybe_transform
-from ...._compat import cached_property
-from ...._resource import SyncAPIResource, AsyncAPIResource
-from ...._response import (
+from ..types import classify_sync_params, classify_batch_params
+from .._types import Body, Query, Headers, NotGiven, FileTypes, SequenceNotStr, not_given
+from .._utils import maybe_transform, async_maybe_transform
+from .._compat import cached_property
+from .._resource import SyncAPIResource, AsyncAPIResource
+from .._response import (
     to_raw_response_wrapper,
     to_streamed_response_wrapper,
     async_to_raw_response_wrapper,
     async_to_streamed_response_wrapper,
 )
-from ...._base_client import make_request_options
-from ....types.api.v1 import classify_sync_params, classify_batch_params
-from ....types.api.v1.classify_sync_response import ClassifySyncResponse
-from ....types.api.v1.classify_batch_response import ClassifyBatchResponse
+from .._base_client import make_request_options
+from ..types.classify_response import ClassifyResponse
+from ..types.batch_classify_response import BatchClassifyResponse
 
 __all__ = ["ClassifyResource", "AsyncClassifyResource"]
 
@@ -63,7 +53,7 @@ class ClassifyResource(SyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> ClassifyBatchResponse:
+    ) -> BatchClassifyResponse:
         """
         Classify multiple documents asynchronously (max 50 files).
 
@@ -83,25 +73,23 @@ class ClassifyResource(SyncAPIResource):
 
           timeout: Override the client-level default timeout for this request, in seconds
         """
-        body = deepcopy_minimal(
-            {
-                "categories": categories,
-                "files": files,
-            }
-        )
-        extracted_files = extract_files(cast(Mapping[str, object], body), paths=[["files", "<array>"]])
         # It should be noted that the actual Content-Type header that will be
         # sent to the server will contain a `boundary` parameter, e.g.
         # multipart/form-data; boundary=---abc--
         extra_headers = {"Content-Type": "multipart/form-data", **(extra_headers or {})}
         return self._post(
             "/api/v1/classify/batch",
-            body=maybe_transform(body, classify_batch_params.ClassifyBatchParams),
-            files=extracted_files,
+            body=maybe_transform(
+                {
+                    "categories": categories,
+                    "files": files,
+                },
+                classify_batch_params.ClassifyBatchParams,
+            ),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
-            cast_to=ClassifyBatchResponse,
+            cast_to=BatchClassifyResponse,
         )
 
     def sync(
@@ -115,7 +103,7 @@ class ClassifyResource(SyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> ClassifySyncResponse:
+    ) -> ClassifyResponse:
         """
         Classify a single document into predefined categories synchronously.
 
@@ -137,25 +125,23 @@ class ClassifyResource(SyncAPIResource):
 
           timeout: Override the client-level default timeout for this request, in seconds
         """
-        body = deepcopy_minimal(
-            {
-                "categories": categories,
-                "file": file,
-            }
-        )
-        files = extract_files(cast(Mapping[str, object], body), paths=[["file"]])
         # It should be noted that the actual Content-Type header that will be
         # sent to the server will contain a `boundary` parameter, e.g.
         # multipart/form-data; boundary=---abc--
         extra_headers = {"Content-Type": "multipart/form-data", **(extra_headers or {})}
         return self._post(
             "/api/v1/classify/sync",
-            body=maybe_transform(body, classify_sync_params.ClassifySyncParams),
-            files=files,
+            body=maybe_transform(
+                {
+                    "categories": categories,
+                    "file": file,
+                },
+                classify_sync_params.ClassifySyncParams,
+            ),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
-            cast_to=ClassifySyncResponse,
+            cast_to=ClassifyResponse,
         )
 
 
@@ -190,7 +176,7 @@ class AsyncClassifyResource(AsyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> ClassifyBatchResponse:
+    ) -> BatchClassifyResponse:
         """
         Classify multiple documents asynchronously (max 50 files).
 
@@ -210,25 +196,23 @@ class AsyncClassifyResource(AsyncAPIResource):
 
           timeout: Override the client-level default timeout for this request, in seconds
         """
-        body = deepcopy_minimal(
-            {
-                "categories": categories,
-                "files": files,
-            }
-        )
-        extracted_files = extract_files(cast(Mapping[str, object], body), paths=[["files", "<array>"]])
         # It should be noted that the actual Content-Type header that will be
         # sent to the server will contain a `boundary` parameter, e.g.
         # multipart/form-data; boundary=---abc--
         extra_headers = {"Content-Type": "multipart/form-data", **(extra_headers or {})}
         return await self._post(
             "/api/v1/classify/batch",
-            body=await async_maybe_transform(body, classify_batch_params.ClassifyBatchParams),
-            files=extracted_files,
+            body=await async_maybe_transform(
+                {
+                    "categories": categories,
+                    "files": files,
+                },
+                classify_batch_params.ClassifyBatchParams,
+            ),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
-            cast_to=ClassifyBatchResponse,
+            cast_to=BatchClassifyResponse,
         )
 
     async def sync(
@@ -242,7 +226,7 @@ class AsyncClassifyResource(AsyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> ClassifySyncResponse:
+    ) -> ClassifyResponse:
         """
         Classify a single document into predefined categories synchronously.
 
@@ -264,25 +248,23 @@ class AsyncClassifyResource(AsyncAPIResource):
 
           timeout: Override the client-level default timeout for this request, in seconds
         """
-        body = deepcopy_minimal(
-            {
-                "categories": categories,
-                "file": file,
-            }
-        )
-        files = extract_files(cast(Mapping[str, object], body), paths=[["file"]])
         # It should be noted that the actual Content-Type header that will be
         # sent to the server will contain a `boundary` parameter, e.g.
         # multipart/form-data; boundary=---abc--
         extra_headers = {"Content-Type": "multipart/form-data", **(extra_headers or {})}
         return await self._post(
             "/api/v1/classify/sync",
-            body=await async_maybe_transform(body, classify_sync_params.ClassifySyncParams),
-            files=files,
+            body=await async_maybe_transform(
+                {
+                    "categories": categories,
+                    "file": file,
+                },
+                classify_sync_params.ClassifySyncParams,
+            ),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
-            cast_to=ClassifySyncResponse,
+            cast_to=ClassifyResponse,
         )
 
 
