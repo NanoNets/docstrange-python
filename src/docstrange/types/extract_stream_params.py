@@ -6,21 +6,21 @@ from typing_extensions import Literal, Required, TypedDict
 
 from .._types import FileTypes
 
-__all__ = ["ExtractSyncParams"]
+__all__ = ["ExtractStreamParams"]
 
 
-class ExtractSyncParams(TypedDict, total=False):
+class ExtractStreamParams(TypedDict, total=False):
     file: Required[FileTypes]
-    """File to upload (PDF, Word, Excel, PowerPoint, images)"""
+    """File to upload"""
 
     output_format: Required[str]
-    """Output format(s): markdown, html, json, csv."""
+    """Output format(s)"""
 
     csv_options: str
-    """CSV extraction options"""
 
     custom_instructions: str
-    """Custom extraction instructions"""
+
+    enable_streaming: bool
 
     file_base64: str
     """Base64-encoded file content"""
@@ -29,9 +29,7 @@ class ExtractSyncParams(TypedDict, total=False):
     """URL to download file from"""
 
     include_metadata: str
-    """Comma-separated metadata types"""
 
     json_options: str
-    """JSON extraction options"""
 
     prompt_mode: Literal["append", "replace"]
