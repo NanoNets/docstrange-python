@@ -34,7 +34,7 @@ from docstrange.types.extract import ExtractionListResponse, PaginationInfo
 Methods:
 
 - <code title="get /api/v1/extract/results/{record_id}">client.extract.results.<a href="./src/docstrange/resources/extract/results.py">retrieve</a>(record_id, \*\*<a href="src/docstrange/types/extract/result_retrieve_params.py">params</a>) -> <a href="./src/docstrange/types/extract_response.py">ExtractResponse</a></code>
-- <code title="get /api/v1/extract/results">client.extract.results.<a href="./src/docstrange/resources/extract/results.py">list</a>(\*\*<a href="src/docstrange/types/extract/result_list_params.py">params</a>) -> <a href="./src/docstrange/types/extract/extraction_list_response.py">ExtractionListResponse</a></code>
+- <code title="get /api/v1/extract/results">client.extract.results.<a href="./src/docstrange/resources/extract/results.py">list</a>(\*\*<a href="src/docstrange/types/extract/result_list_params.py">params</a>) -> <a href="./src/docstrange/types/extract_response.py">SyncPageNumberPagination[ExtractResponse]</a></code>
 
 # Classify
 

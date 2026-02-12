@@ -10,7 +10,7 @@ import pytest
 from docstrange import Docstrange, AsyncDocstrange
 from tests.utils import assert_matches_type
 from docstrange.types import ExtractResponse
-from docstrange.types.extract import ExtractionListResponse
+from docstrange.pagination import SyncPageNumberPagination, AsyncPageNumberPagination
 
 base_url = os.environ.get("TEST_API_BASE_URL", "http://127.0.0.1:4010")
 
@@ -73,7 +73,7 @@ class TestResults:
     @parametrize
     def test_method_list(self, client: Docstrange) -> None:
         result = client.extract.results.list()
-        assert_matches_type(ExtractionListResponse, result, path=["response"])
+        assert_matches_type(SyncPageNumberPagination[ExtractResponse], result, path=["response"])
 
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
@@ -84,7 +84,7 @@ class TestResults:
             sort_by="created_at",
             sort_order="asc",
         )
-        assert_matches_type(ExtractionListResponse, result, path=["response"])
+        assert_matches_type(SyncPageNumberPagination[ExtractResponse], result, path=["response"])
 
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
@@ -94,7 +94,7 @@ class TestResults:
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
         result = response.parse()
-        assert_matches_type(ExtractionListResponse, result, path=["response"])
+        assert_matches_type(SyncPageNumberPagination[ExtractResponse], result, path=["response"])
 
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
@@ -104,7 +104,7 @@ class TestResults:
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
             result = response.parse()
-            assert_matches_type(ExtractionListResponse, result, path=["response"])
+            assert_matches_type(SyncPageNumberPagination[ExtractResponse], result, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 
@@ -169,7 +169,7 @@ class TestAsyncResults:
     @parametrize
     async def test_method_list(self, async_client: AsyncDocstrange) -> None:
         result = await async_client.extract.results.list()
-        assert_matches_type(ExtractionListResponse, result, path=["response"])
+        assert_matches_type(AsyncPageNumberPagination[ExtractResponse], result, path=["response"])
 
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
@@ -180,7 +180,7 @@ class TestAsyncResults:
             sort_by="created_at",
             sort_order="asc",
         )
-        assert_matches_type(ExtractionListResponse, result, path=["response"])
+        assert_matches_type(AsyncPageNumberPagination[ExtractResponse], result, path=["response"])
 
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
@@ -190,7 +190,7 @@ class TestAsyncResults:
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
         result = await response.parse()
-        assert_matches_type(ExtractionListResponse, result, path=["response"])
+        assert_matches_type(AsyncPageNumberPagination[ExtractResponse], result, path=["response"])
 
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
@@ -200,6 +200,6 @@ class TestAsyncResults:
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
             result = await response.parse()
-            assert_matches_type(ExtractionListResponse, result, path=["response"])
+            assert_matches_type(AsyncPageNumberPagination[ExtractResponse], result, path=["response"])
 
         assert cast(Any, response.is_closed) is True
