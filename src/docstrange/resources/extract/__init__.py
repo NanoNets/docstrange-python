@@ -8,8 +8,22 @@ from .extract import (
     ExtractResourceWithStreamingResponse,
     AsyncExtractResourceWithStreamingResponse,
 )
+from .results import (
+    ResultsResource,
+    AsyncResultsResource,
+    ResultsResourceWithRawResponse,
+    AsyncResultsResourceWithRawResponse,
+    ResultsResourceWithStreamingResponse,
+    AsyncResultsResourceWithStreamingResponse,
+)
 
 __all__ = [
+    "ResultsResource",
+    "AsyncResultsResource",
+    "ResultsResourceWithRawResponse",
+    "AsyncResultsResourceWithRawResponse",
+    "ResultsResourceWithStreamingResponse",
+    "AsyncResultsResourceWithStreamingResponse",
     "ExtractResource",
     "AsyncExtractResource",
     "ExtractResourceWithRawResponse",

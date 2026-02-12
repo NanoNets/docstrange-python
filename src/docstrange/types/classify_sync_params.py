@@ -11,7 +11,10 @@ __all__ = ["ClassifySyncParams"]
 
 class ClassifySyncParams(TypedDict, total=False):
     categories: Required[str]
-    """JSON array of category objects"""
+    """
+    JSON array of category objects: [{"name": "Category Name", "description":
+    "Optional description"}]
+    """
 
     file: Required[FileTypes]
-    """File to classify"""
+    """File to classify (PDF, PNG, JPG, JPEG, TIFF, BMP, WebP)"""
