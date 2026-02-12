@@ -33,7 +33,6 @@ client = Docstrange(
 )
 
 extract_response = client.extract.sync(
-    file=b"raw file contents",
     output_format="markdown",
 )
 print(extract_response.record_id)
@@ -60,7 +59,6 @@ client = AsyncDocstrange(
 
 async def main() -> None:
     extract_response = await client.extract.sync(
-        file=b"raw file contents",
         output_format="markdown",
     )
     print(extract_response.record_id)
@@ -97,7 +95,6 @@ async def main() -> None:
         http_client=DefaultAioHttpClient(),
     ) as client:
         extract_response = await client.extract.sync(
-            file=b"raw file contents",
             output_format="markdown",
         )
         print(extract_response.record_id)
@@ -115,6 +112,67 @@ Nested request parameters are [TypedDicts](https://docs.python.org/3/library/typ
 
 Typed requests and responses provide autocomplete and documentation within your editor. If you would like to see type errors in VS Code to help catch bugs earlier, set `python.analysis.typeCheckingMode` to `basic`.
 
+## Pagination
+
+List methods in the Docstrange API are paginated.
+
+This library provides auto-paginating iterators with each list response, so you do not have to request successive pages manually:
+
+```python
+from docstrange import Docstrange
+
+client = Docstrange()
+
+all_results = []
+# Automatically fetches more pages as needed.
+for result in client.extract.results.list():
+    # Do something with result here
+    all_results.append(result)
+print(all_results)
+```
+
+Or, asynchronously:
+
+```python
+import asyncio
+from docstrange import AsyncDocstrange
+
+client = AsyncDocstrange()
+
+
+async def main() -> None:
+    all_results = []
+    # Iterate through items across all pages, issuing requests as needed.
+    async for result in client.extract.results.list():
+        all_results.append(result)
+    print(all_results)
+
+
+asyncio.run(main())
+```
+
+Alternatively, you can use the `.has_next_page()`, `.next_page_info()`, or `.get_next_page()` methods for more granular control working with pages:
+
+```python
+first_page = await client.extract.results.list()
+if first_page.has_next_page():
+    print(f"will fetch next page using these details: {first_page.next_page_info()}")
+    next_page = await first_page.get_next_page()
+    print(f"number of items we just fetched: {len(next_page.results)}")
+
+# Remove `await` for non-async usage.
+```
+
+Or just work directly with the returned data:
+
+```python
+first_page = await client.extract.results.list()
+for result in first_page.results:
+    print(result.record_id)
+
+# Remove `await` for non-async usage.
+```
+
 ## File uploads
 
 Request parameters that correspond to file uploads can be passed as `bytes`, or a [`PathLike`](https://docs.python.org/3/library/os.html#os.PathLike) instance or a tuple of `(filename, contents, media type)`.
@@ -126,8 +184,8 @@ from docstrange import Docstrange
 client = Docstrange()
 
 client.extract.sync(
-    file=Path("/path/to/file"),
     output_format="markdown",
+    file=Path("/path/to/file"),
 )
 ```
 
@@ -150,7 +208,6 @@ client = Docstrange()
 
 try:
     client.extract.sync(
-        file=b"raw file contents",
         output_format="markdown",
     )
 except docstrange.APIConnectionError as e:
@@ -196,7 +253,6 @@ client = Docstrange(
 
 # Or, configure per-request:
 client.with_options(max_retries=5).extract.sync(
-    file=b"raw file contents",
     output_format="markdown",
 )
 ```
@@ -222,7 +278,6 @@ client = Docstrange(
 
 # Override per-request:
 client.with_options(timeout=5.0).extract.sync(
-    file=b"raw file contents",
     output_format="markdown",
 )
 ```
@@ -266,7 +321,6 @@ from docstrange import Docstrange
 
 client = Docstrange()
 response = client.extract.with_raw_response.sync(
-    file=b"raw file contents",
     output_format="markdown",
 )
 print(response.headers.get('X-My-Header'))
@@ -287,7 +341,6 @@ To stream the response body, use `.with_streaming_response` instead, which requi
 
 ```python
 with client.extract.with_streaming_response.sync(
-    file=b"raw file contents",
     output_format="markdown",
 ) as response:
     print(response.headers.get("X-My-Header"))
