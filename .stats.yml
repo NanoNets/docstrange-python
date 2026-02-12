@@ -1,4 +1,4 @@
-configured_endpoints: 9
-openapi_spec_url: https://storage.googleapis.com/stainless-sdk-openapi-specs/nanonets%2Fdocstrange-61ca0326580cb90b4bc39c85c49cb2083d14ce9865ea272f2cb84cc7c639b0b2.yml
-openapi_spec_hash: 6940490040b26eeb3c38bb2d7d9f00ce
+configured_endpoints: 2
+openapi_spec_url: https://storage.googleapis.com/stainless-sdk-openapi-specs/nanonets%2Fdocstrange-75dd621006675868b0701738226a045f2e9d7211242fece922f06478bef66738.yml
+openapi_spec_hash: 47cb78aa2caa018fe58742fc19b0a49c
 config_hash: aed0d6cc8b4cffa1f02021baec0a6da3
