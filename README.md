@@ -1,7 +1,7 @@
 # Docstrange Python API library
 
 <!-- prettier-ignore -->
-[![PyPI version](https://img.shields.io/pypi/v/docstrange.svg?label=pypi%20(stable))](https://pypi.org/project/docstrange/)
+[![PyPI version](https://img.shields.io/pypi/v/docstrange-api.svg?label=pypi%20(stable))](https://pypi.org/project/docstrange-api/)
 
 The Docstrange Python library provides convenient access to the Docstrange REST API from any Python 3.9+
 application. The library includes type definitions for all request params and response fields,
@@ -11,17 +11,14 @@ It is generated with [Stainless](https://www.stainless.com/).
 
 ## Documentation
 
-The full API of this library can be found in [api.md](api.md).
+The REST API documentation can be found on [docs.nanonets.com](https://docs.nanonets.com). The full API of this library can be found in [api.md](api.md).
 
 ## Installation
 
 ```sh
-# install from this staging repo
-pip install git+ssh://git@github.com/stainless-sdks/docstrange-python.git
+# install from PyPI
+pip install docstrange-api
 ```
-
-> [!NOTE]
-> Once this package is [published to PyPI](https://www.stainless.com/docs/guides/publish), this will become: `pip install docstrange`
 
 ## Usage
 
@@ -35,7 +32,7 @@ client = Docstrange(
     api_key=os.environ.get("DOCSTRANGE_API_KEY"),  # This is the default and can be omitted
 )
 
-extract_response = client.api.v1.extract.sync(
+extract_response = client.extract.sync(
     output_format="markdown",
 )
 print(extract_response.record_id)
@@ -61,7 +58,7 @@ client = AsyncDocstrange(
 
 
 async def main() -> None:
-    extract_response = await client.api.v1.extract.sync(
+    extract_response = await client.extract.sync(
         output_format="markdown",
     )
     print(extract_response.record_id)
@@ -79,8 +76,8 @@ By default, the async client uses `httpx` for HTTP requests. However, for improv
 You can enable this by installing `aiohttp`:
 
 ```sh
-# install from this staging repo
-pip install 'docstrange[aiohttp] @ git+ssh://git@github.com/stainless-sdks/docstrange-python.git'
+# install from PyPI
+pip install docstrange-api[aiohttp]
 ```
 
 Then you can enable it by instantiating the client with `http_client=DefaultAioHttpClient()`:
@@ -97,7 +94,7 @@ async def main() -> None:
         api_key=os.environ.get("DOCSTRANGE_API_KEY"),  # This is the default and can be omitted
         http_client=DefaultAioHttpClient(),
     ) as client:
-        extract_response = await client.api.v1.extract.sync(
+        extract_response = await client.extract.sync(
             output_format="markdown",
         )
         print(extract_response.record_id)
@@ -115,6 +112,67 @@ Nested request parameters are [TypedDicts](https://docs.python.org/3/library/typ
 
 Typed requests and responses provide autocomplete and documentation within your editor. If you would like to see type errors in VS Code to help catch bugs earlier, set `python.analysis.typeCheckingMode` to `basic`.
 
+## Pagination
+
+List methods in the Docstrange API are paginated.
+
+This library provides auto-paginating iterators with each list response, so you do not have to request successive pages manually:
+
+```python
+from docstrange import Docstrange
+
+client = Docstrange()
+
+all_results = []
+# Automatically fetches more pages as needed.
+for result in client.extract.results.list():
+    # Do something with result here
+    all_results.append(result)
+print(all_results)
+```
+
+Or, asynchronously:
+
+```python
+import asyncio
+from docstrange import AsyncDocstrange
+
+client = AsyncDocstrange()
+
+
+async def main() -> None:
+    all_results = []
+    # Iterate through items across all pages, issuing requests as needed.
+    async for result in client.extract.results.list():
+        all_results.append(result)
+    print(all_results)
+
+
+asyncio.run(main())
+```
+
+Alternatively, you can use the `.has_next_page()`, `.next_page_info()`, or `.get_next_page()` methods for more granular control working with pages:
+
+```python
+first_page = await client.extract.results.list()
+if first_page.has_next_page():
+    print(f"will fetch next page using these details: {first_page.next_page_info()}")
+    next_page = await first_page.get_next_page()
+    print(f"number of items we just fetched: {len(next_page.results)}")
+
+# Remove `await` for non-async usage.
+```
+
+Or just work directly with the returned data:
+
+```python
+first_page = await client.extract.results.list()
+for result in first_page.results:
+    print(result.record_id)
+
+# Remove `await` for non-async usage.
+```
+
 ## File uploads
 
 Request parameters that correspond to file uploads can be passed as `bytes`, or a [`PathLike`](https://docs.python.org/3/library/os.html#os.PathLike) instance or a tuple of `(filename, contents, media type)`.
@@ -125,7 +183,7 @@ from docstrange import Docstrange
 
 client = Docstrange()
 
-client.api.v1.extract.sync(
+client.extract.sync(
     output_format="markdown",
     file=Path("/path/to/file"),
 )
@@ -149,7 +207,7 @@ from docstrange import Docstrange
 client = Docstrange()
 
 try:
-    client.api.v1.extract.sync(
+    client.extract.sync(
         output_format="markdown",
     )
 except docstrange.APIConnectionError as e:
@@ -194,7 +252,7 @@ client = Docstrange(
 )
 
 # Or, configure per-request:
-client.with_options(max_retries=5).api.v1.extract.sync(
+client.with_options(max_retries=5).extract.sync(
     output_format="markdown",
 )
 ```
@@ -219,7 +277,7 @@ client = Docstrange(
 )
 
 # Override per-request:
-client.with_options(timeout=5.0).api.v1.extract.sync(
+client.with_options(timeout=5.0).extract.sync(
     output_format="markdown",
 )
 ```
@@ -262,18 +320,18 @@ The "raw" Response object can be accessed by prefixing `.with_raw_response.` to 
 from docstrange import Docstrange
 
 client = Docstrange()
-response = client.api.v1.extract.with_raw_response.sync(
+response = client.extract.with_raw_response.sync(
     output_format="markdown",
 )
 print(response.headers.get('X-My-Header'))
 
-extract = response.parse()  # get the object that `api.v1.extract.sync()` would have returned
+extract = response.parse()  # get the object that `extract.sync()` would have returned
 print(extract.record_id)
 ```
 
-These methods return an [`APIResponse`](https://github.com/stainless-sdks/docstrange-python/tree/main/src/docstrange/_response.py) object.
+These methods return an [`APIResponse`](https://github.com/NanoNets/docstrange-python/tree/main/src/docstrange/_response.py) object.
 
-The async client returns an [`AsyncAPIResponse`](https://github.com/stainless-sdks/docstrange-python/tree/main/src/docstrange/_response.py) with the same structure, the only difference being `await`able methods for reading the response content.
+The async client returns an [`AsyncAPIResponse`](https://github.com/NanoNets/docstrange-python/tree/main/src/docstrange/_response.py) with the same structure, the only difference being `await`able methods for reading the response content.
 
 #### `.with_streaming_response`
 
@@ -282,7 +340,7 @@ The above interface eagerly reads the full response body when you make the reque
 To stream the response body, use `.with_streaming_response` instead, which requires a context manager and only reads the response body once you call `.read()`, `.text()`, `.json()`, `.iter_bytes()`, `.iter_text()`, `.iter_lines()` or `.parse()`. In the async client, these are async methods.
 
 ```python
-with client.api.v1.extract.with_streaming_response.sync(
+with client.extract.with_streaming_response.sync(
     output_format="markdown",
 ) as response:
     print(response.headers.get("X-My-Header"))
@@ -379,7 +437,7 @@ This package generally follows [SemVer](https://semver.org/spec/v2.0.0.html) con
 
 We take backwards-compatibility seriously and work hard to ensure you can rely on a smooth upgrade experience.
 
-We are keen for your feedback; please open an [issue](https://www.github.com/stainless-sdks/docstrange-python/issues) with questions, bugs, or suggestions.
+We are keen for your feedback; please open an [issue](https://www.github.com/NanoNets/docstrange-python/issues) with questions, bugs, or suggestions.
 
 ### Determining the installed version
 

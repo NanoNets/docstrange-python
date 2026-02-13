@@ -1,59 +1,63 @@
-# API
-
-## V1
-
-### Extract
+# Extract
 
 Types:
 
 ```python
-from docstrange.types.api.v1 import (
-    ExtractRequestBody,
+from docstrange.types import (
+    BatchExtractResponse,
     ExtractResponse,
     ExtractionFormatResult,
-    ExtractBatchResponse,
+    ExtractionMetadata,
+    ExtractionResult,
     ExtractStreamResponse,
 )
 ```
 
 Methods:
 
-- <code title="post /api/v1/extract/async">client.api.v1.extract.<a href="./src/docstrange/resources/api/v1/extract/extract.py">async\_</a>(\*\*<a href="src/docstrange/types/api/v1/extract_async_params.py">params</a>) -> <a href="./src/docstrange/types/api/v1/extract_response.py">ExtractResponse</a></code>
-- <code title="post /api/v1/extract/batch">client.api.v1.extract.<a href="./src/docstrange/resources/api/v1/extract/extract.py">batch</a>(\*\*<a href="src/docstrange/types/api/v1/extract_batch_params.py">params</a>) -> <a href="./src/docstrange/types/api/v1/extract_batch_response.py">ExtractBatchResponse</a></code>
-- <code title="post /api/v1/extract/stream">client.api.v1.extract.<a href="./src/docstrange/resources/api/v1/extract/extract.py">stream</a>(\*\*<a href="src/docstrange/types/api/v1/extract_stream_params.py">params</a>) -> str</code>
-- <code title="post /api/v1/extract/sync">client.api.v1.extract.<a href="./src/docstrange/resources/api/v1/extract/extract.py">sync</a>(\*\*<a href="src/docstrange/types/api/v1/extract_sync_params.py">params</a>) -> <a href="./src/docstrange/types/api/v1/extract_response.py">ExtractResponse</a></code>
+- <code title="post /api/v1/extract/async">client.extract.<a href="./src/docstrange/resources/extract/extract.py">async\_</a>(\*\*<a href="src/docstrange/types/extract_async_params.py">params</a>) -> <a href="./src/docstrange/types/extract_response.py">ExtractResponse</a></code>
+- <code title="post /api/v1/extract/batch">client.extract.<a href="./src/docstrange/resources/extract/extract.py">batch</a>(\*\*<a href="src/docstrange/types/extract_batch_params.py">params</a>) -> <a href="./src/docstrange/types/batch_extract_response.py">BatchExtractResponse</a></code>
+- <code title="post /api/v1/extract/stream">client.extract.<a href="./src/docstrange/resources/extract/extract.py">stream</a>(\*\*<a href="src/docstrange/types/extract_stream_params.py">params</a>) -> str</code>
+- <code title="post /api/v1/extract/sync">client.extract.<a href="./src/docstrange/resources/extract/extract.py">sync</a>(\*\*<a href="src/docstrange/types/extract_sync_params.py">params</a>) -> <a href="./src/docstrange/types/extract_response.py">ExtractResponse</a></code>
 
-#### Results
+## Results
 
 Types:
 
 ```python
-from docstrange.types.api.v1.extract import ResultListResponse
+from docstrange.types.extract import ExtractionListResponse, PaginationInfo
 ```
 
 Methods:
 
-- <code title="get /api/v1/extract/results/{record_id}">client.api.v1.extract.results.<a href="./src/docstrange/resources/api/v1/extract/results.py">retrieve</a>(record_id, \*\*<a href="src/docstrange/types/api/v1/extract/result_retrieve_params.py">params</a>) -> <a href="./src/docstrange/types/api/v1/extract_response.py">ExtractResponse</a></code>
-- <code title="get /api/v1/extract/results">client.api.v1.extract.results.<a href="./src/docstrange/resources/api/v1/extract/results.py">list</a>(\*\*<a href="src/docstrange/types/api/v1/extract/result_list_params.py">params</a>) -> <a href="./src/docstrange/types/api/v1/extract/result_list_response.py">ResultListResponse</a></code>
+- <code title="get /api/v1/extract/results/{record_id}">client.extract.results.<a href="./src/docstrange/resources/extract/results.py">retrieve</a>(record_id, \*\*<a href="src/docstrange/types/extract/result_retrieve_params.py">params</a>) -> <a href="./src/docstrange/types/extract_response.py">ExtractResponse</a></code>
+- <code title="get /api/v1/extract/results">client.extract.results.<a href="./src/docstrange/resources/extract/results.py">list</a>(\*\*<a href="src/docstrange/types/extract/result_list_params.py">params</a>) -> <a href="./src/docstrange/types/extract_response.py">SyncPageNumberPagination[ExtractResponse]</a></code>
 
-### Classify
+# Classify
 
 Types:
 
 ```python
-from docstrange.types.api.v1 import (
+from docstrange.types import (
+    BatchClassifyResponse,
+    ClassifyResponse,
     FileClassificationResult,
-    ClassifyBatchResponse,
-    ClassifySyncResponse,
+    PageClassification,
 )
 ```
 
 Methods:
 
-- <code title="post /api/v1/classify/batch">client.api.v1.classify.<a href="./src/docstrange/resources/api/v1/classify.py">batch</a>(\*\*<a href="src/docstrange/types/api/v1/classify_batch_params.py">params</a>) -> <a href="./src/docstrange/types/api/v1/classify_batch_response.py">ClassifyBatchResponse</a></code>
-- <code title="post /api/v1/classify/sync">client.api.v1.classify.<a href="./src/docstrange/resources/api/v1/classify.py">sync</a>(\*\*<a href="src/docstrange/types/api/v1/classify_sync_params.py">params</a>) -> <a href="./src/docstrange/types/api/v1/classify_sync_response.py">ClassifySyncResponse</a></code>
+- <code title="post /api/v1/classify/batch">client.classify.<a href="./src/docstrange/resources/classify.py">batch</a>(\*\*<a href="src/docstrange/types/classify_batch_params.py">params</a>) -> <a href="./src/docstrange/types/batch_classify_response.py">BatchClassifyResponse</a></code>
+- <code title="post /api/v1/classify/sync">client.classify.<a href="./src/docstrange/resources/classify.py">sync</a>(\*\*<a href="src/docstrange/types/classify_sync_params.py">params</a>) -> <a href="./src/docstrange/types/classify_response.py">ClassifyResponse</a></code>
 
 # Chat
+
+Types:
+
+```python
+from docstrange.types import ChatCompletionsRequest
+```
 
 Methods:
 
