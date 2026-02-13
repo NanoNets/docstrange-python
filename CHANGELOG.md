@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.1.1 (2026-02-13)
+
+Full Changelog: [v0.1.0...v0.1.1](https://github.com/NanoNets/docstrange-python/compare/v0.1.0...v0.1.1)
+
+### Chores
+
+* update SDK settings ([4be656b](https://github.com/NanoNets/docstrange-python/commit/4be656b40d112b38670bbaaa8fc6a7eed3bf220c))
+* update SDK settings ([b8b57c1](https://github.com/NanoNets/docstrange-python/commit/b8b57c1b29eed833b8b7b4a2b27deb8f6d39e302))
+
 ## 0.1.0 (2026-02-13)
 
 Full Changelog: [v0.0.1...v0.1.0](https://github.com/NanoNets/docstrange-python/compare/v0.0.1...v0.1.0)
