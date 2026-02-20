@@ -17,7 +17,7 @@ base_url = os.environ.get("TEST_API_BASE_URL", "http://127.0.0.1:4010")
 class TestClassify:
     parametrize = pytest.mark.parametrize("client", [False, True], indirect=True, ids=["loose", "strict"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_batch(self, client: Docstrange) -> None:
         classify = client.classify.batch(
@@ -26,7 +26,7 @@ class TestClassify:
         )
         assert_matches_type(BatchClassifyResponse, classify, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_batch(self, client: Docstrange) -> None:
         response = client.classify.with_raw_response.batch(
@@ -39,7 +39,7 @@ class TestClassify:
         classify = response.parse()
         assert_matches_type(BatchClassifyResponse, classify, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_batch(self, client: Docstrange) -> None:
         with client.classify.with_streaming_response.batch(
@@ -54,7 +54,7 @@ class TestClassify:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_sync(self, client: Docstrange) -> None:
         classify = client.classify.sync(
@@ -63,7 +63,7 @@ class TestClassify:
         )
         assert_matches_type(ClassifyResponse, classify, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_sync(self, client: Docstrange) -> None:
         response = client.classify.with_raw_response.sync(
@@ -76,7 +76,7 @@ class TestClassify:
         classify = response.parse()
         assert_matches_type(ClassifyResponse, classify, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_sync(self, client: Docstrange) -> None:
         with client.classify.with_streaming_response.sync(
@@ -97,7 +97,7 @@ class TestAsyncClassify:
         "async_client", [False, True, {"http_client": "aiohttp"}], indirect=True, ids=["loose", "strict", "aiohttp"]
     )
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_batch(self, async_client: AsyncDocstrange) -> None:
         classify = await async_client.classify.batch(
@@ -106,7 +106,7 @@ class TestAsyncClassify:
         )
         assert_matches_type(BatchClassifyResponse, classify, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_batch(self, async_client: AsyncDocstrange) -> None:
         response = await async_client.classify.with_raw_response.batch(
@@ -119,7 +119,7 @@ class TestAsyncClassify:
         classify = await response.parse()
         assert_matches_type(BatchClassifyResponse, classify, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_batch(self, async_client: AsyncDocstrange) -> None:
         async with async_client.classify.with_streaming_response.batch(
@@ -134,7 +134,7 @@ class TestAsyncClassify:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_sync(self, async_client: AsyncDocstrange) -> None:
         classify = await async_client.classify.sync(
@@ -143,7 +143,7 @@ class TestAsyncClassify:
         )
         assert_matches_type(ClassifyResponse, classify, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_sync(self, async_client: AsyncDocstrange) -> None:
         response = await async_client.classify.with_raw_response.sync(
@@ -156,7 +156,7 @@ class TestAsyncClassify:
         classify = await response.parse()
         assert_matches_type(ClassifyResponse, classify, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_sync(self, async_client: AsyncDocstrange) -> None:
         async with async_client.classify.with_streaming_response.sync(
