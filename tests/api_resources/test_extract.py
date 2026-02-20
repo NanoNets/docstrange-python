@@ -121,7 +121,7 @@ class TestExtract:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Mock server doesn't support text/event-stream responses")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_stream(self, client: Docstrange) -> None:
         extract_stream = client.extract.stream(
@@ -129,7 +129,7 @@ class TestExtract:
         )
         extract_stream.response.close()
 
-    @pytest.mark.skip(reason="Mock server doesn't support text/event-stream responses")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_stream_with_all_params(self, client: Docstrange) -> None:
         extract_stream = client.extract.stream(
@@ -146,7 +146,7 @@ class TestExtract:
         )
         extract_stream.response.close()
 
-    @pytest.mark.skip(reason="Mock server doesn't support text/event-stream responses")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_stream(self, client: Docstrange) -> None:
         response = client.extract.with_raw_response.stream(
@@ -157,7 +157,7 @@ class TestExtract:
         stream = response.parse()
         stream.close()
 
-    @pytest.mark.skip(reason="Mock server doesn't support text/event-stream responses")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_stream(self, client: Docstrange) -> None:
         with client.extract.with_streaming_response.stream(
@@ -328,7 +328,7 @@ class TestAsyncExtract:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Mock server doesn't support text/event-stream responses")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_stream(self, async_client: AsyncDocstrange) -> None:
         extract_stream = await async_client.extract.stream(
@@ -336,7 +336,7 @@ class TestAsyncExtract:
         )
         await extract_stream.response.aclose()
 
-    @pytest.mark.skip(reason="Mock server doesn't support text/event-stream responses")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_stream_with_all_params(self, async_client: AsyncDocstrange) -> None:
         extract_stream = await async_client.extract.stream(
@@ -353,7 +353,7 @@ class TestAsyncExtract:
         )
         await extract_stream.response.aclose()
 
-    @pytest.mark.skip(reason="Mock server doesn't support text/event-stream responses")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_stream(self, async_client: AsyncDocstrange) -> None:
         response = await async_client.extract.with_raw_response.stream(
@@ -364,7 +364,7 @@ class TestAsyncExtract:
         stream = await response.parse()
         await stream.close()
 
-    @pytest.mark.skip(reason="Mock server doesn't support text/event-stream responses")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_stream(self, async_client: AsyncDocstrange) -> None:
         async with async_client.extract.with_streaming_response.stream(
