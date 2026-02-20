@@ -1,204 +1,457 @@
-# Docstrange Python API library
+# Docstrange Python SDK
 
 <!-- prettier-ignore -->
 [![PyPI version](https://img.shields.io/pypi/v/docstrange-api.svg?label=pypi%20(stable))](https://pypi.org/project/docstrange-api/)
+[![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 
-The Docstrange Python library provides convenient access to the Docstrange REST API from any Python 3.9+
-application. The library includes type definitions for all request params and response fields,
-and offers both synchronous and asynchronous clients powered by [httpx](https://github.com/encode/httpx).
+**The official Python SDK for the Nanonets Document AI API** — Extract, classify, and analyze documents with state-of-the-art AI models.
 
-It is generated with [Stainless](https://www.stainless.com/).
+## Features
 
-## Documentation
+- 🔍 **Document Extraction** — Convert PDFs, images, and documents to Markdown, HTML, JSON, or CSV
+- 📊 **Document Classification** — Classify documents into custom categories with confidence scores
+- 💬 **Chat Completions** — OpenAI-compatible chat API with vision capabilities
+- ⚡ **Streaming Support** — Real-time Server-Sent Events (SSE) for progressive extraction
+- 🔄 **Async & Sync Clients** — Both synchronous and async interfaces
+- 📦 **Type-Safe** — Full type hints and Pydantic models for IDE autocomplete
+- 🔁 **Auto-Retry** — Built-in retry logic with exponential backoff
+- 📄 **Pagination** — Auto-paginating iterators for list endpoints
 
-The REST API documentation can be found on [docs.nanonets.com](https://docs.nanonets.com). The full API of this library can be found in [api.md](api.md).
+## Quick Start
 
-## Installation
+### Installation
 
-```sh
-# install from PyPI
+```bash
 pip install docstrange-api
 ```
 
-## Usage
+### Get Your API Key
 
-The full API of this library can be found in [api.md](api.md).
+1. Sign up at [nanonets.com](https://nanonets.com)
+2. Navigate to **Settings** → **API Keys**
+3. Create a new API key
+
+### Basic Usage
 
 ```python
-import os
 from docstrange import Docstrange
 
-client = Docstrange(
-    api_key=os.environ.get("DOCSTRANGE_API_KEY"),  # This is the default and can be omitted
-)
+# Initialize the client
+client = Docstrange(api_key="your-api-key")
 
-extract_response = client.extract.sync(
-    output_format="markdown",
-)
-print(extract_response.record_id)
-```
-
-While you can provide an `api_key` keyword argument,
-we recommend using [python-dotenv](https://pypi.org/project/python-dotenv/)
-to add `DOCSTRANGE_API_KEY="My API Key"` to your `.env` file
-so that your API Key is not stored in source control.
-
-## Async usage
-
-Simply import `AsyncDocstrange` instead of `Docstrange` and use `await` with each API call:
-
-```python
-import os
-import asyncio
-from docstrange import AsyncDocstrange
-
-client = AsyncDocstrange(
-    api_key=os.environ.get("DOCSTRANGE_API_KEY"),  # This is the default and can be omitted
-)
-
-
-async def main() -> None:
-    extract_response = await client.extract.sync(
+# Extract content from a PDF
+with open("document.pdf", "rb") as f:
+    response = client.extract.sync(
+        file=f,
         output_format="markdown",
     )
-    print(extract_response.record_id)
 
-
-asyncio.run(main())
+print(response.result.markdown.content)
 ```
 
-Functionality between the synchronous and asynchronous clients is otherwise identical.
+## Documentation
 
-### With aiohttp
+| Resource | Description |
+|----------|-------------|
+| [API Reference](api.md) | Complete SDK method reference |
+| [REST API Docs](https://docs.nanonets.com) | Full REST API documentation |
+| [Examples](examples/) | Code examples for common use cases |
 
-By default, the async client uses `httpx` for HTTP requests. However, for improved concurrency performance you may also use `aiohttp` as the HTTP backend.
+---
 
-You can enable this by installing `aiohttp`:
+## Core Concepts
 
-```sh
-# install from PyPI
-pip install docstrange-api[aiohttp]
-```
+### Input Methods
 
-Then you can enable it by instantiating the client with `http_client=DefaultAioHttpClient()`:
+The SDK supports three ways to provide documents:
 
 ```python
-import os
-import asyncio
-from docstrange import DefaultAioHttpClient
-from docstrange import AsyncDocstrange
+# 1. File upload (binary)
+with open("document.pdf", "rb") as f:
+    response = client.extract.sync(file=f, output_format="markdown")
 
+# 2. Base64-encoded content
+import base64
+with open("document.pdf", "rb") as f:
+    b64_content = base64.b64encode(f.read()).decode()
+response = client.extract.sync(file_base64=b64_content, output_format="markdown")
 
-async def main() -> None:
-    async with AsyncDocstrange(
-        api_key=os.environ.get("DOCSTRANGE_API_KEY"),  # This is the default and can be omitted
-        http_client=DefaultAioHttpClient(),
-    ) as client:
-        extract_response = await client.extract.sync(
-            output_format="markdown",
-        )
-        print(extract_response.record_id)
-
-
-asyncio.run(main())
-```
-
-## Using types
-
-Nested request parameters are [TypedDicts](https://docs.python.org/3/library/typing.html#typing.TypedDict). Responses are [Pydantic models](https://docs.pydantic.dev) which also provide helper methods for things like:
-
-- Serializing back into JSON, `model.to_json()`
-- Converting to a dictionary, `model.to_dict()`
-
-Typed requests and responses provide autocomplete and documentation within your editor. If you would like to see type errors in VS Code to help catch bugs earlier, set `python.analysis.typeCheckingMode` to `basic`.
-
-## Pagination
-
-List methods in the Docstrange API are paginated.
-
-This library provides auto-paginating iterators with each list response, so you do not have to request successive pages manually:
-
-```python
-from docstrange import Docstrange
-
-client = Docstrange()
-
-all_results = []
-# Automatically fetches more pages as needed.
-for result in client.extract.results.list():
-    # Do something with result here
-    all_results.append(result)
-print(all_results)
-```
-
-Or, asynchronously:
-
-```python
-import asyncio
-from docstrange import AsyncDocstrange
-
-client = AsyncDocstrange()
-
-
-async def main() -> None:
-    all_results = []
-    # Iterate through items across all pages, issuing requests as needed.
-    async for result in client.extract.results.list():
-        all_results.append(result)
-    print(all_results)
-
-
-asyncio.run(main())
-```
-
-Alternatively, you can use the `.has_next_page()`, `.next_page_info()`, or `.get_next_page()` methods for more granular control working with pages:
-
-```python
-first_page = await client.extract.results.list()
-if first_page.has_next_page():
-    print(f"will fetch next page using these details: {first_page.next_page_info()}")
-    next_page = await first_page.get_next_page()
-    print(f"number of items we just fetched: {len(next_page.results)}")
-
-# Remove `await` for non-async usage.
-```
-
-Or just work directly with the returned data:
-
-```python
-first_page = await client.extract.results.list()
-for result in first_page.results:
-    print(result.record_id)
-
-# Remove `await` for non-async usage.
-```
-
-## File uploads
-
-Request parameters that correspond to file uploads can be passed as `bytes`, or a [`PathLike`](https://docs.python.org/3/library/os.html#os.PathLike) instance or a tuple of `(filename, contents, media type)`.
-
-```python
-from pathlib import Path
-from docstrange import Docstrange
-
-client = Docstrange()
-
-client.extract.sync(
+# 3. URL (publicly accessible)
+response = client.extract.sync(
+    file_url="https://example.com/document.pdf",
     output_format="markdown",
-    file=Path("/path/to/file"),
 )
 ```
 
-The async client uses the exact same interface. If you pass a [`PathLike`](https://docs.python.org/3/library/os.html#os.PathLike) instance, the file contents will be read asynchronously automatically.
+### Output Formats
 
-## Handling errors
+| Format | Description | Use Case |
+|--------|-------------|----------|
+| `markdown` | Structured Markdown with headers, lists, tables | LLM context, RAG pipelines |
+| `html` | HTML with semantic tags | Web display |
+| `json` | Structured key-value extraction | Form processing, data entry |
+| `csv` | Tabular data extraction | Spreadsheet import, analytics |
 
-When the library is unable to connect to the API (for example, due to network connection problems or a timeout), a subclass of `docstrange.APIConnectionError` is raised.
+```python
+# Single format
+response = client.extract.sync(file=f, output_format="markdown")
+print(response.result.markdown.content)
 
-When the API returns a non-success status code (that is, 4xx or 5xx
-response), a subclass of `docstrange.APIStatusError` is raised, containing `status_code` and `response` properties.
+# Multiple formats
+response = client.extract.sync(file=f, output_format="markdown,json")
+print(response.result.markdown.content)
+print(response.result.json_.content)  # Note: json_ (reserved keyword)
+```
 
-All errors inherit from `docstrange.APIError`.
+---
+
+## API Reference
+
+### Document Extraction
+
+#### Synchronous Extraction
+
+Process a document and wait for the result:
+
+```python
+response = client.extract.sync(
+    file=open("invoice.pdf", "rb"),
+    output_format="json",
+    json_options='["invoice_number", "date", "total", "vendor"]',
+    custom_instructions="Extract all line items with quantities and prices",
+)
+
+print(f"Invoice #: {response.result.json_.content.get('invoice_number')}")
+print(f"Total: {response.result.json_.content.get('total')}")
+```
+
+#### Asynchronous Extraction
+
+Queue a document for processing and poll for results:
+
+```python
+# Submit for async processing
+job = client.extract.async_(
+    file_base64=base64_content,
+    output_format="markdown",
+)
+print(f"Job queued: {job.record_id}")
+
+# Poll for completion
+import time
+while True:
+    result = client.extract.results.retrieve(job.record_id)
+    if result.status == "completed":
+        print(result.result.markdown.content)
+        break
+    elif result.status == "failed":
+        print(f"Error: {result.message}")
+        break
+    time.sleep(2)
+```
+
+#### Streaming Extraction (SSE)
+
+Get results progressively as they're generated:
+
+```python
+with client.extract.stream(
+    file_base64=base64_content,
+    output_format="markdown",
+) as stream:
+    for event in stream:
+        if event.get("type") == "content":
+            print(event["data"], end="", flush=True)
+        elif event.get("type") == "done":
+            print(f"\n\nCompleted in {event['processing_time']}s")
+```
+
+#### Batch Extraction
+
+Process multiple files in parallel:
+
+```python
+files = [open("doc1.pdf", "rb"), open("doc2.pdf", "rb"), open("doc3.pdf", "rb")]
+
+response = client.extract.batch(
+    files=files,
+    output_format="markdown",
+)
+
+print(f"Batch {response.batch_id}: {response.accepted_files}/{response.total_files} accepted")
+
+for record in response.records:
+    print(f"  {record.filename}: {record.status}")
+```
+
+### Extraction Options
+
+#### JSON Schema Extraction
+
+Extract structured data using predefined fields:
+
+```python
+# Simple field list
+response = client.extract.sync(
+    file=f,
+    output_format="json",
+    json_options='["name", "email", "phone", "address"]',
+)
+
+# With custom instructions
+response = client.extract.sync(
+    file=f,
+    output_format="json",
+    json_options='["invoice_number", "line_items", "subtotal", "tax", "total"]',
+    custom_instructions="For line_items, extract as array with description, quantity, unit_price",
+)
+```
+
+#### Include Metadata
+
+Get additional information like bounding boxes and confidence scores:
+
+```python
+# Block-level bounding boxes
+response = client.extract.sync(
+    file=f,
+    output_format="markdown",
+    include_metadata="bounding_boxes",
+)
+boxes = response.result.markdown.metadata.bounding_boxes
+
+# Word-level bounding boxes
+response = client.extract.sync(
+    file=f,
+    output_format="markdown",
+    include_metadata="bounding_boxes_word",
+)
+
+# Confidence scores (for JSON extraction)
+response = client.extract.sync(
+    file=f,
+    output_format="json",
+    include_metadata="confidence_score",
+)
+scores = response.result.json_.metadata.confidence_score
+```
+
+#### Custom Instructions
+
+Guide the extraction with natural language:
+
+```python
+# Append to default prompt
+response = client.extract.sync(
+    file=f,
+    output_format="markdown",
+    custom_instructions="Focus on financial data. Format all currency as USD.",
+    prompt_mode="append",
+)
+
+# Replace default prompt entirely
+response = client.extract.sync(
+    file=f,
+    output_format="markdown",
+    custom_instructions="Extract only the executive summary section.",
+    prompt_mode="replace",
+)
+```
+
+### Results Management
+
+#### Retrieve a Result
+
+```python
+result = client.extract.results.retrieve("12345")
+print(f"Status: {result.status}")
+print(f"File: {result.filename}")
+print(f"Processing time: {result.processing_time}s")
+
+if result.status == "completed":
+    print(result.result.markdown.content)
+```
+
+#### List All Results (Paginated)
+
+```python
+# Auto-paginating iterator
+for result in client.extract.results.list(page_size=20):
+    print(f"{result.record_id}: {result.filename} ({result.status})")
+
+# Manual pagination
+page = client.extract.results.list(page=1, page_size=10, sort_by="created_at", sort_order="desc")
+print(f"Page {page.pagination.page} of {page.pagination.total_pages}")
+
+for result in page.results:
+    print(f"  {result.record_id}: {result.filename}")
+
+if page.has_next_page():
+    next_page = page.get_next_page()
+```
+
+---
+
+### Document Classification
+
+Classify documents into custom categories:
+
+```python
+categories = '''[
+    {"name": "Invoice", "description": "Bills, invoices, and payment requests"},
+    {"name": "Contract", "description": "Legal agreements and contracts"},
+    {"name": "Resume", "description": "CVs and job applications"},
+    {"name": "Report", "description": "Business reports and analysis"}
+]'''
+
+with open("document.pdf", "rb") as f:
+    response = client.classify.sync(
+        file=f,
+        categories=categories,
+    )
+
+for page in response.result.pages:
+    print(f"Page {page.page_number}: {page.category} ({page.confidence}%)")
+    print(f"  Reasoning: {page.reasoning}")
+```
+
+#### Batch Classification
+
+```python
+files = [open("doc1.pdf", "rb"), open("doc2.pdf", "rb")]
+
+response = client.classify.batch(
+    files=files,
+    categories=categories,
+)
+
+for result in response.results:
+    print(f"{result.filename}: {result.pages[0].category}")
+```
+
+---
+
+### Chat Completions (Vision)
+
+OpenAI-compatible chat API with document understanding:
+
+```python
+# Text-only completion
+response = client.chat.create_completion(
+    model="nanonets/Nanonets-OCR-s",
+    messages=[
+        {"role": "user", "content": [
+            {"type": "text", "text": "What is the capital of France?"}
+        ]}
+    ],
+)
+
+# Vision: analyze an image
+response = client.chat.create_completion(
+    model="nanonets/Nanonets-OCR-s",
+    messages=[
+        {"role": "user", "content": [
+            {"type": "image_url", "image_url": {"url": "https://example.com/chart.png"}},
+            {"type": "text", "text": "Describe this chart and extract the key data points."}
+        ]}
+    ],
+)
+```
+
+---
+
+## Async Client
+
+For asyncio applications:
+
+```python
+import asyncio
+from docstrange import AsyncDocstrange
+
+async def main():
+    client = AsyncDocstrange(api_key="your-api-key")
+    
+    response = await client.extract.sync(
+        file_base64=base64_content,
+        output_format="markdown",
+    )
+    print(response.result.markdown.content)
+    
+    # Don't forget to close
+    await client.close()
+
+asyncio.run(main())
+```
+
+Or use as context manager:
+
+```python
+async with AsyncDocstrange(api_key="your-api-key") as client:
+    response = await client.extract.sync(
+        file_base64=base64_content,
+        output_format="markdown",
+    )
+```
+
+### With aiohttp (Better Concurrency)
+
+```python
+from docstrange import AsyncDocstrange, DefaultAioHttpClient
+
+# Install: pip install docstrange-api[aiohttp]
+
+async with AsyncDocstrange(
+    api_key="your-api-key",
+    http_client=DefaultAioHttpClient(),
+) as client:
+    response = await client.extract.sync(...)
+```
+
+---
+
+## Configuration
+
+### Environment Variables
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `DOCSTRANGE_API_KEY` | API key for authentication | Required |
+| `DOCSTRANGE_BASE_URL` | API base URL | `https://extraction-api.nanonets.com` |
+| `DOCSTRANGE_LOG` | Log level (`info`, `debug`) | None |
+
+```python
+import os
+os.environ["DOCSTRANGE_API_KEY"] = "your-api-key"
+
+# Client will auto-detect from environment
+client = Docstrange()
+```
+
+### Client Options
+
+```python
+client = Docstrange(
+    api_key="your-api-key",
+    base_url="https://extraction-api.nanonets.com",  # Custom endpoint
+    timeout=120.0,  # Request timeout in seconds (default: 60)
+    max_retries=3,  # Retry attempts (default: 2)
+)
+```
+
+### Per-Request Options
+
+```python
+# Override timeout for a specific request
+response = client.with_options(timeout=300.0).extract.sync(
+    file=large_file,
+    output_format="markdown",
+)
+```
+
+---
+
+## Error Handling
 
 ```python
 import docstrange
@@ -207,253 +460,156 @@ from docstrange import Docstrange
 client = Docstrange()
 
 try:
-    client.extract.sync(
-        output_format="markdown",
-    )
-except docstrange.APIConnectionError as e:
-    print("The server could not be reached")
-    print(e.__cause__)  # an underlying Exception, likely raised within httpx.
+    response = client.extract.sync(file=f, output_format="markdown")
+except docstrange.AuthenticationError:
+    print("Invalid API key")
 except docstrange.RateLimitError as e:
-    print("A 429 status code was received; we should back off a bit.")
+    print(f"Rate limited. Retry after: {e.response.headers.get('Retry-After')}s")
+except docstrange.BadRequestError as e:
+    print(f"Invalid request: {e.message}")
+except docstrange.APIConnectionError:
+    print("Network error - check your connection")
 except docstrange.APIStatusError as e:
-    print("Another non-200-range status code was received")
-    print(e.status_code)
-    print(e.response)
+    print(f"API error {e.status_code}: {e.message}")
 ```
 
-Error codes are as follows:
+### Error Types
 
-| Status Code | Error Type                 |
-| ----------- | -------------------------- |
-| 400         | `BadRequestError`          |
-| 401         | `AuthenticationError`      |
-| 403         | `PermissionDeniedError`    |
-| 404         | `NotFoundError`            |
-| 422         | `UnprocessableEntityError` |
-| 429         | `RateLimitError`           |
-| >=500       | `InternalServerError`      |
-| N/A         | `APIConnectionError`       |
+| Status Code | Exception | Description |
+|-------------|-----------|-------------|
+| 400 | `BadRequestError` | Invalid request parameters |
+| 401 | `AuthenticationError` | Invalid or missing API key |
+| 403 | `PermissionDeniedError` | Insufficient permissions |
+| 404 | `NotFoundError` | Resource not found |
+| 422 | `UnprocessableEntityError` | Validation error |
+| 429 | `RateLimitError` | Rate limit exceeded |
+| ≥500 | `InternalServerError` | Server error |
+| N/A | `APIConnectionError` | Network connectivity issue |
+| N/A | `APITimeoutError` | Request timed out |
 
-### Retries
+---
 
-Certain errors are automatically retried 2 times by default, with a short exponential backoff.
-Connection errors (for example, due to a network connectivity problem), 408 Request Timeout, 409 Conflict,
-429 Rate Limit, and >=500 Internal errors are all retried by default.
+## Advanced Usage
 
-You can use the `max_retries` option to configure or disable retry settings:
+### Raw Response Access
 
 ```python
-from docstrange import Docstrange
-
-# Configure the default for all requests:
-client = Docstrange(
-    # default is 2
-    max_retries=0,
-)
-
-# Or, configure per-request:
-client.with_options(max_retries=5).extract.sync(
-    output_format="markdown",
-)
-```
-
-### Timeouts
-
-By default requests time out after 1 minute. You can configure this with a `timeout` option,
-which accepts a float or an [`httpx.Timeout`](https://www.python-httpx.org/advanced/timeouts/#fine-tuning-the-configuration) object:
-
-```python
-from docstrange import Docstrange
-
-# Configure the default for all requests:
-client = Docstrange(
-    # 20 seconds (default is 1 minute)
-    timeout=20.0,
-)
-
-# More granular control:
-client = Docstrange(
-    timeout=httpx.Timeout(60.0, read=5.0, write=10.0, connect=2.0),
-)
-
-# Override per-request:
-client.with_options(timeout=5.0).extract.sync(
-    output_format="markdown",
-)
-```
-
-On timeout, an `APITimeoutError` is thrown.
-
-Note that requests that time out are [retried twice by default](#retries).
-
-## Advanced
-
-### Logging
-
-We use the standard library [`logging`](https://docs.python.org/3/library/logging.html) module.
-
-You can enable logging by setting the environment variable `DOCSTRANGE_LOG` to `info`.
-
-```shell
-$ export DOCSTRANGE_LOG=info
-```
-
-Or to `debug` for more verbose logging.
-
-### How to tell whether `None` means `null` or missing
-
-In an API response, a field may be explicitly `null`, or missing entirely; in either case, its value is `None` in this library. You can differentiate the two cases with `.model_fields_set`:
-
-```py
-if response.my_field is None:
-  if 'my_field' not in response.model_fields_set:
-    print('Got json like {}, without a "my_field" key present at all.')
-  else:
-    print('Got json like {"my_field": null}.')
-```
-
-### Accessing raw response data (e.g. headers)
-
-The "raw" Response object can be accessed by prefixing `.with_raw_response.` to any HTTP method call, e.g.,
-
-```py
-from docstrange import Docstrange
-
-client = Docstrange()
 response = client.extract.with_raw_response.sync(
+    file=f,
     output_format="markdown",
 )
-print(response.headers.get('X-My-Header'))
 
-extract = response.parse()  # get the object that `extract.sync()` would have returned
-print(extract.record_id)
+print(f"Status: {response.status_code}")
+print(f"Headers: {response.headers}")
+
+# Parse the body
+result = response.parse()
+print(result.result.markdown.content)
 ```
 
-These methods return an [`APIResponse`](https://github.com/NanoNets/docstrange-python/tree/main/src/docstrange/_response.py) object.
-
-The async client returns an [`AsyncAPIResponse`](https://github.com/NanoNets/docstrange-python/tree/main/src/docstrange/_response.py) with the same structure, the only difference being `await`able methods for reading the response content.
-
-#### `.with_streaming_response`
-
-The above interface eagerly reads the full response body when you make the request, which may not always be what you want.
-
-To stream the response body, use `.with_streaming_response` instead, which requires a context manager and only reads the response body once you call `.read()`, `.text()`, `.json()`, `.iter_bytes()`, `.iter_text()`, `.iter_lines()` or `.parse()`. In the async client, these are async methods.
+### Streaming Response
 
 ```python
 with client.extract.with_streaming_response.sync(
+    file=f,
     output_format="markdown",
 ) as response:
-    print(response.headers.get("X-My-Header"))
-
-    for line in response.iter_lines():
-        print(line)
+    for chunk in response.iter_bytes():
+        process(chunk)
 ```
 
-The context manager is required so that the response will reliably be closed.
-
-### Making custom/undocumented requests
-
-This library is typed for convenient access to the documented API.
-
-If you need to access undocumented endpoints, params, or response properties, the library can still be used.
-
-#### Undocumented endpoints
-
-To make requests to undocumented endpoints, you can make requests using `client.get`, `client.post`, and other
-http verbs. Options on the client will be respected (such as retries) when making this request.
-
-```py
-import httpx
-
-response = client.post(
-    "/foo",
-    cast_to=httpx.Response,
-    body={"my_param": True},
-)
-
-print(response.headers.get("x-foo"))
-```
-
-#### Undocumented request params
-
-If you want to explicitly send an extra param, you can do so with the `extra_query`, `extra_body`, and `extra_headers` request
-options.
-
-#### Undocumented response properties
-
-To access undocumented response properties, you can access the extra fields like `response.unknown_prop`. You
-can also get all the extra fields on the Pydantic model as a dict with
-[`response.model_extra`](https://docs.pydantic.dev/latest/api/base_model/#pydantic.BaseModel.model_extra).
-
-### Configuring the HTTP client
-
-You can directly override the [httpx client](https://www.python-httpx.org/api/#client) to customize it for your use case, including:
-
-- Support for [proxies](https://www.python-httpx.org/advanced/proxies/)
-- Custom [transports](https://www.python-httpx.org/advanced/transports/)
-- Additional [advanced](https://www.python-httpx.org/advanced/clients/) functionality
+### Custom HTTP Client
 
 ```python
 import httpx
 from docstrange import Docstrange, DefaultHttpxClient
 
 client = Docstrange(
-    # Or use the `DOCSTRANGE_BASE_URL` env var
-    base_url="http://my.test.server.example.com:8083",
+    api_key="your-api-key",
     http_client=DefaultHttpxClient(
-        proxy="http://my.test.proxy.example.com",
+        proxy="http://proxy.example.com:8080",
         transport=httpx.HTTPTransport(local_address="0.0.0.0"),
     ),
 )
 ```
 
-You can also customize the client on a per-request basis by using `with_options()`:
+---
+
+## Type Reference
+
+### Response Models
 
 ```python
-client.with_options(http_client=DefaultHttpxClient(...))
+from docstrange.types import (
+    # Extraction
+    ExtractResponse,
+    ExtractionResult,
+    ExtractionFormatResult,
+    ExtractionMetadata,
+    BatchExtractResponse,
+    
+    # Classification
+    ClassifyResponse,
+    BatchClassifyResponse,
+    FileClassificationResult,
+    PageClassification,
+    
+    # Pagination
+    ExtractionListResponse,
+    PaginationInfo,
+)
 ```
 
-### Managing HTTP resources
+### Response Structure
 
-By default the library closes underlying HTTP connections whenever the client is [garbage collected](https://docs.python.org/3/reference/datamodel.html#object.__del__). You can manually close the client using the `.close()` method if desired, or with a context manager that closes when exiting.
+```python
+ExtractResponse:
+    success: bool
+    message: str
+    record_id: str
+    status: str  # "completed", "processing", "failed"
+    result: ExtractionResult | None
+    processing_time: float | None
+    filename: str | None
+    output_format: str | None
+    file_size: int | None
+    pages_processed: int | None
+    created_at: str | None
+    signed_url: str | None  # Download URL for original file
 
-```py
-from docstrange import Docstrange
+ExtractionResult:
+    markdown: ExtractionFormatResult | None
+    html: ExtractionFormatResult | None
+    json_: ExtractionFormatResult | None  # Note: json_ not json
+    csv: ExtractionFormatResult | None
 
-with Docstrange() as client:
-  # make requests here
-  ...
+ExtractionFormatResult:
+    content: str | dict | list
+    metadata: ExtractionMetadata
 
-# HTTP client is now closed
+ExtractionMetadata:
+    bounding_boxes: dict | None
+    confidence_score: dict | None
 ```
 
-## Versioning
-
-This package generally follows [SemVer](https://semver.org/spec/v2.0.0.html) conventions, though certain backwards-incompatible changes may be released as minor versions:
-
-1. Changes that only affect static types, without breaking runtime behavior.
-2. Changes to library internals which are technically public but not intended or documented for external use. _(Please open a GitHub issue to let us know if you are relying on such internals.)_
-3. Changes that we do not expect to impact the vast majority of users in practice.
-
-We take backwards-compatibility seriously and work hard to ensure you can rely on a smooth upgrade experience.
-
-We are keen for your feedback; please open an [issue](https://www.github.com/NanoNets/docstrange-python/issues) with questions, bugs, or suggestions.
-
-### Determining the installed version
-
-If you've upgraded to the latest version but aren't seeing any new features you were expecting then your python environment is likely still using an older version.
-
-You can determine the version that is being used at runtime with:
-
-```py
-import docstrange
-print(docstrange.__version__)
-```
+---
 
 ## Requirements
 
-Python 3.9 or higher.
+- Python 3.9+
+- Dependencies: `httpx`, `pydantic`, `typing-extensions`, `anyio`, `distro`
 
 ## Contributing
 
-See [the contributing documentation](./CONTRIBUTING.md).
+See [CONTRIBUTING.md](CONTRIBUTING.md) for development setup and guidelines.
+
+## License
+
+Apache 2.0 - See [LICENSE](LICENSE) for details.
+
+## Support
+
+- 📚 [Documentation](https://docs.nanonets.com)
+- 🐛 [Issue Tracker](https://github.com/NanoNets/docstrange-python/issues)
+- 💬 [Discord Community](https://discord.gg/nanonets)
+- 📧 [Email Support](mailto:support@nanonets.com)
