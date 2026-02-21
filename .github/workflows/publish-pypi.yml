@@ -12,10 +12,6 @@ jobs:
   publish:
     name: publish
     runs-on: ubuntu-latest
-    permissions:
-      
-      id-token: write
-      contents: read
 
     steps:
       - uses: actions/checkout@v6
@@ -28,3 +24,5 @@ jobs:
       - name: Publish to PyPI
         run: |
           bash ./bin/publish-pypi
+        env:
+          PYPI_TOKEN: ${{ secrets.DOCSTRANGE_PYPI_TOKEN || secrets.PYPI_TOKEN }}
