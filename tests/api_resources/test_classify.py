@@ -22,7 +22,7 @@ class TestClassify:
     def test_method_batch(self, client: Docstrange) -> None:
         classify = client.classify.batch(
             categories='[{"name": "Invoice"}, {"name": "Contract"}, {"name": "Receipt"}]',
-            files=[b"raw file contents"],
+            files=[b"Example data"],
         )
         assert_matches_type(BatchClassifyResponse, classify, path=["response"])
 
@@ -31,7 +31,7 @@ class TestClassify:
     def test_raw_response_batch(self, client: Docstrange) -> None:
         response = client.classify.with_raw_response.batch(
             categories='[{"name": "Invoice"}, {"name": "Contract"}, {"name": "Receipt"}]',
-            files=[b"raw file contents"],
+            files=[b"Example data"],
         )
 
         assert response.is_closed is True
@@ -44,7 +44,7 @@ class TestClassify:
     def test_streaming_response_batch(self, client: Docstrange) -> None:
         with client.classify.with_streaming_response.batch(
             categories='[{"name": "Invoice"}, {"name": "Contract"}, {"name": "Receipt"}]',
-            files=[b"raw file contents"],
+            files=[b"Example data"],
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -59,7 +59,7 @@ class TestClassify:
     def test_method_sync(self, client: Docstrange) -> None:
         classify = client.classify.sync(
             categories='[{"name": "Invoice", "description": "Bills and invoices"}, {"name": "Contract", "description": "Legal agreements"}]',
-            file=b"raw file contents",
+            file=b"Example data",
         )
         assert_matches_type(ClassifyResponse, classify, path=["response"])
 
@@ -68,7 +68,7 @@ class TestClassify:
     def test_raw_response_sync(self, client: Docstrange) -> None:
         response = client.classify.with_raw_response.sync(
             categories='[{"name": "Invoice", "description": "Bills and invoices"}, {"name": "Contract", "description": "Legal agreements"}]',
-            file=b"raw file contents",
+            file=b"Example data",
         )
 
         assert response.is_closed is True
@@ -81,7 +81,7 @@ class TestClassify:
     def test_streaming_response_sync(self, client: Docstrange) -> None:
         with client.classify.with_streaming_response.sync(
             categories='[{"name": "Invoice", "description": "Bills and invoices"}, {"name": "Contract", "description": "Legal agreements"}]',
-            file=b"raw file contents",
+            file=b"Example data",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -102,7 +102,7 @@ class TestAsyncClassify:
     async def test_method_batch(self, async_client: AsyncDocstrange) -> None:
         classify = await async_client.classify.batch(
             categories='[{"name": "Invoice"}, {"name": "Contract"}, {"name": "Receipt"}]',
-            files=[b"raw file contents"],
+            files=[b"Example data"],
         )
         assert_matches_type(BatchClassifyResponse, classify, path=["response"])
 
@@ -111,7 +111,7 @@ class TestAsyncClassify:
     async def test_raw_response_batch(self, async_client: AsyncDocstrange) -> None:
         response = await async_client.classify.with_raw_response.batch(
             categories='[{"name": "Invoice"}, {"name": "Contract"}, {"name": "Receipt"}]',
-            files=[b"raw file contents"],
+            files=[b"Example data"],
         )
 
         assert response.is_closed is True
@@ -124,7 +124,7 @@ class TestAsyncClassify:
     async def test_streaming_response_batch(self, async_client: AsyncDocstrange) -> None:
         async with async_client.classify.with_streaming_response.batch(
             categories='[{"name": "Invoice"}, {"name": "Contract"}, {"name": "Receipt"}]',
-            files=[b"raw file contents"],
+            files=[b"Example data"],
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -139,7 +139,7 @@ class TestAsyncClassify:
     async def test_method_sync(self, async_client: AsyncDocstrange) -> None:
         classify = await async_client.classify.sync(
             categories='[{"name": "Invoice", "description": "Bills and invoices"}, {"name": "Contract", "description": "Legal agreements"}]',
-            file=b"raw file contents",
+            file=b"Example data",
         )
         assert_matches_type(ClassifyResponse, classify, path=["response"])
 
@@ -148,7 +148,7 @@ class TestAsyncClassify:
     async def test_raw_response_sync(self, async_client: AsyncDocstrange) -> None:
         response = await async_client.classify.with_raw_response.sync(
             categories='[{"name": "Invoice", "description": "Bills and invoices"}, {"name": "Contract", "description": "Legal agreements"}]',
-            file=b"raw file contents",
+            file=b"Example data",
         )
 
         assert response.is_closed is True
@@ -161,7 +161,7 @@ class TestAsyncClassify:
     async def test_streaming_response_sync(self, async_client: AsyncDocstrange) -> None:
         async with async_client.classify.with_streaming_response.sync(
             categories='[{"name": "Invoice", "description": "Bills and invoices"}, {"name": "Contract", "description": "Legal agreements"}]',
-            file=b"raw file contents",
+            file=b"Example data",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
