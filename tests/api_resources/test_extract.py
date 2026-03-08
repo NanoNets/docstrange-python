@@ -35,7 +35,7 @@ class TestExtract:
             output_format="markdown",
             csv_options="",
             custom_instructions="",
-            file=b"raw file contents",
+            file=b"Example data",
             file_base64="",
             file_url="",
             include_metadata="",
@@ -74,7 +74,7 @@ class TestExtract:
     @parametrize
     def test_method_batch(self, client: Docstrange) -> None:
         extract = client.extract.batch(
-            files=[b"raw file contents"],
+            files=[b"Example data"],
             output_format="markdown",
         )
         assert_matches_type(BatchExtractResponse, extract, path=["response"])
@@ -83,7 +83,7 @@ class TestExtract:
     @parametrize
     def test_method_batch_with_all_params(self, client: Docstrange) -> None:
         extract = client.extract.batch(
-            files=[b"raw file contents"],
+            files=[b"Example data"],
             output_format="markdown",
             csv_options="csv_options",
             custom_instructions="custom_instructions",
@@ -97,7 +97,7 @@ class TestExtract:
     @parametrize
     def test_raw_response_batch(self, client: Docstrange) -> None:
         response = client.extract.with_raw_response.batch(
-            files=[b"raw file contents"],
+            files=[b"Example data"],
             output_format="markdown",
         )
 
@@ -110,7 +110,7 @@ class TestExtract:
     @parametrize
     def test_streaming_response_batch(self, client: Docstrange) -> None:
         with client.extract.with_streaming_response.batch(
-            files=[b"raw file contents"],
+            files=[b"Example data"],
             output_format="markdown",
         ) as response:
             assert not response.is_closed
@@ -137,7 +137,7 @@ class TestExtract:
             csv_options="",
             custom_instructions="",
             enable_streaming=True,
-            file=b"raw file contents",
+            file=b"Example data",
             file_base64="",
             file_url="",
             include_metadata="",
@@ -186,7 +186,7 @@ class TestExtract:
             output_format="markdown",
             csv_options="",
             custom_instructions="",
-            file=b"raw file contents",
+            file=b"Example data",
             file_base64="",
             file_url="",
             include_metadata="",
@@ -242,7 +242,7 @@ class TestAsyncExtract:
             output_format="markdown",
             csv_options="",
             custom_instructions="",
-            file=b"raw file contents",
+            file=b"Example data",
             file_base64="",
             file_url="",
             include_metadata="",
@@ -281,7 +281,7 @@ class TestAsyncExtract:
     @parametrize
     async def test_method_batch(self, async_client: AsyncDocstrange) -> None:
         extract = await async_client.extract.batch(
-            files=[b"raw file contents"],
+            files=[b"Example data"],
             output_format="markdown",
         )
         assert_matches_type(BatchExtractResponse, extract, path=["response"])
@@ -290,7 +290,7 @@ class TestAsyncExtract:
     @parametrize
     async def test_method_batch_with_all_params(self, async_client: AsyncDocstrange) -> None:
         extract = await async_client.extract.batch(
-            files=[b"raw file contents"],
+            files=[b"Example data"],
             output_format="markdown",
             csv_options="csv_options",
             custom_instructions="custom_instructions",
@@ -304,7 +304,7 @@ class TestAsyncExtract:
     @parametrize
     async def test_raw_response_batch(self, async_client: AsyncDocstrange) -> None:
         response = await async_client.extract.with_raw_response.batch(
-            files=[b"raw file contents"],
+            files=[b"Example data"],
             output_format="markdown",
         )
 
@@ -317,7 +317,7 @@ class TestAsyncExtract:
     @parametrize
     async def test_streaming_response_batch(self, async_client: AsyncDocstrange) -> None:
         async with async_client.extract.with_streaming_response.batch(
-            files=[b"raw file contents"],
+            files=[b"Example data"],
             output_format="markdown",
         ) as response:
             assert not response.is_closed
@@ -344,7 +344,7 @@ class TestAsyncExtract:
             csv_options="",
             custom_instructions="",
             enable_streaming=True,
-            file=b"raw file contents",
+            file=b"Example data",
             file_base64="",
             file_url="",
             include_metadata="",
@@ -393,7 +393,7 @@ class TestAsyncExtract:
             output_format="markdown",
             csv_options="",
             custom_instructions="",
-            file=b"raw file contents",
+            file=b"Example data",
             file_base64="",
             file_url="",
             include_metadata="",
