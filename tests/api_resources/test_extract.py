@@ -20,7 +20,7 @@ base_url = os.environ.get("TEST_API_BASE_URL", "http://127.0.0.1:4010")
 class TestExtract:
     parametrize = pytest.mark.parametrize("client", [False, True], indirect=True, ids=["loose", "strict"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_async(self, client: Docstrange) -> None:
         extract = client.extract.async_(
@@ -28,14 +28,14 @@ class TestExtract:
         )
         assert_matches_type(ExtractResponse, extract, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_async_with_all_params(self, client: Docstrange) -> None:
         extract = client.extract.async_(
             output_format="markdown",
             csv_options="",
             custom_instructions="",
-            file=b"raw file contents",
+            file=b"Example data",
             file_base64="",
             file_url="",
             include_metadata="",
@@ -44,7 +44,7 @@ class TestExtract:
         )
         assert_matches_type(ExtractResponse, extract, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_async(self, client: Docstrange) -> None:
         response = client.extract.with_raw_response.async_(
@@ -56,7 +56,7 @@ class TestExtract:
         extract = response.parse()
         assert_matches_type(ExtractResponse, extract, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_async(self, client: Docstrange) -> None:
         with client.extract.with_streaming_response.async_(
@@ -70,20 +70,20 @@ class TestExtract:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_batch(self, client: Docstrange) -> None:
         extract = client.extract.batch(
-            files=[b"raw file contents"],
+            files=[b"Example data"],
             output_format="markdown",
         )
         assert_matches_type(BatchExtractResponse, extract, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_batch_with_all_params(self, client: Docstrange) -> None:
         extract = client.extract.batch(
-            files=[b"raw file contents"],
+            files=[b"Example data"],
             output_format="markdown",
             csv_options="csv_options",
             custom_instructions="custom_instructions",
@@ -93,11 +93,11 @@ class TestExtract:
         )
         assert_matches_type(BatchExtractResponse, extract, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_batch(self, client: Docstrange) -> None:
         response = client.extract.with_raw_response.batch(
-            files=[b"raw file contents"],
+            files=[b"Example data"],
             output_format="markdown",
         )
 
@@ -106,11 +106,11 @@ class TestExtract:
         extract = response.parse()
         assert_matches_type(BatchExtractResponse, extract, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_batch(self, client: Docstrange) -> None:
         with client.extract.with_streaming_response.batch(
-            files=[b"raw file contents"],
+            files=[b"Example data"],
             output_format="markdown",
         ) as response:
             assert not response.is_closed
@@ -121,7 +121,7 @@ class TestExtract:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism doesn't support text/event-stream responses")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_stream(self, client: Docstrange) -> None:
         extract_stream = client.extract.stream(
@@ -129,7 +129,7 @@ class TestExtract:
         )
         extract_stream.response.close()
 
-    @pytest.mark.skip(reason="Prism doesn't support text/event-stream responses")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_stream_with_all_params(self, client: Docstrange) -> None:
         extract_stream = client.extract.stream(
@@ -137,7 +137,7 @@ class TestExtract:
             csv_options="",
             custom_instructions="",
             enable_streaming=True,
-            file=b"raw file contents",
+            file=b"Example data",
             file_base64="",
             file_url="",
             include_metadata="",
@@ -146,7 +146,7 @@ class TestExtract:
         )
         extract_stream.response.close()
 
-    @pytest.mark.skip(reason="Prism doesn't support text/event-stream responses")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_stream(self, client: Docstrange) -> None:
         response = client.extract.with_raw_response.stream(
@@ -157,7 +157,7 @@ class TestExtract:
         stream = response.parse()
         stream.close()
 
-    @pytest.mark.skip(reason="Prism doesn't support text/event-stream responses")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_stream(self, client: Docstrange) -> None:
         with client.extract.with_streaming_response.stream(
@@ -171,7 +171,7 @@ class TestExtract:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_sync(self, client: Docstrange) -> None:
         extract = client.extract.sync(
@@ -179,14 +179,14 @@ class TestExtract:
         )
         assert_matches_type(ExtractResponse, extract, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_sync_with_all_params(self, client: Docstrange) -> None:
         extract = client.extract.sync(
             output_format="markdown",
             csv_options="",
             custom_instructions="",
-            file=b"raw file contents",
+            file=b"Example data",
             file_base64="",
             file_url="",
             include_metadata="",
@@ -195,7 +195,7 @@ class TestExtract:
         )
         assert_matches_type(ExtractResponse, extract, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_sync(self, client: Docstrange) -> None:
         response = client.extract.with_raw_response.sync(
@@ -207,7 +207,7 @@ class TestExtract:
         extract = response.parse()
         assert_matches_type(ExtractResponse, extract, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_sync(self, client: Docstrange) -> None:
         with client.extract.with_streaming_response.sync(
@@ -227,7 +227,7 @@ class TestAsyncExtract:
         "async_client", [False, True, {"http_client": "aiohttp"}], indirect=True, ids=["loose", "strict", "aiohttp"]
     )
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_async(self, async_client: AsyncDocstrange) -> None:
         extract = await async_client.extract.async_(
@@ -235,14 +235,14 @@ class TestAsyncExtract:
         )
         assert_matches_type(ExtractResponse, extract, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_async_with_all_params(self, async_client: AsyncDocstrange) -> None:
         extract = await async_client.extract.async_(
             output_format="markdown",
             csv_options="",
             custom_instructions="",
-            file=b"raw file contents",
+            file=b"Example data",
             file_base64="",
             file_url="",
             include_metadata="",
@@ -251,7 +251,7 @@ class TestAsyncExtract:
         )
         assert_matches_type(ExtractResponse, extract, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_async(self, async_client: AsyncDocstrange) -> None:
         response = await async_client.extract.with_raw_response.async_(
@@ -263,7 +263,7 @@ class TestAsyncExtract:
         extract = await response.parse()
         assert_matches_type(ExtractResponse, extract, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_async(self, async_client: AsyncDocstrange) -> None:
         async with async_client.extract.with_streaming_response.async_(
@@ -277,20 +277,20 @@ class TestAsyncExtract:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_batch(self, async_client: AsyncDocstrange) -> None:
         extract = await async_client.extract.batch(
-            files=[b"raw file contents"],
+            files=[b"Example data"],
             output_format="markdown",
         )
         assert_matches_type(BatchExtractResponse, extract, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_batch_with_all_params(self, async_client: AsyncDocstrange) -> None:
         extract = await async_client.extract.batch(
-            files=[b"raw file contents"],
+            files=[b"Example data"],
             output_format="markdown",
             csv_options="csv_options",
             custom_instructions="custom_instructions",
@@ -300,11 +300,11 @@ class TestAsyncExtract:
         )
         assert_matches_type(BatchExtractResponse, extract, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_batch(self, async_client: AsyncDocstrange) -> None:
         response = await async_client.extract.with_raw_response.batch(
-            files=[b"raw file contents"],
+            files=[b"Example data"],
             output_format="markdown",
         )
 
@@ -313,11 +313,11 @@ class TestAsyncExtract:
         extract = await response.parse()
         assert_matches_type(BatchExtractResponse, extract, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_batch(self, async_client: AsyncDocstrange) -> None:
         async with async_client.extract.with_streaming_response.batch(
-            files=[b"raw file contents"],
+            files=[b"Example data"],
             output_format="markdown",
         ) as response:
             assert not response.is_closed
@@ -328,7 +328,7 @@ class TestAsyncExtract:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism doesn't support text/event-stream responses")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_stream(self, async_client: AsyncDocstrange) -> None:
         extract_stream = await async_client.extract.stream(
@@ -336,7 +336,7 @@ class TestAsyncExtract:
         )
         await extract_stream.response.aclose()
 
-    @pytest.mark.skip(reason="Prism doesn't support text/event-stream responses")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_stream_with_all_params(self, async_client: AsyncDocstrange) -> None:
         extract_stream = await async_client.extract.stream(
@@ -344,7 +344,7 @@ class TestAsyncExtract:
             csv_options="",
             custom_instructions="",
             enable_streaming=True,
-            file=b"raw file contents",
+            file=b"Example data",
             file_base64="",
             file_url="",
             include_metadata="",
@@ -353,7 +353,7 @@ class TestAsyncExtract:
         )
         await extract_stream.response.aclose()
 
-    @pytest.mark.skip(reason="Prism doesn't support text/event-stream responses")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_stream(self, async_client: AsyncDocstrange) -> None:
         response = await async_client.extract.with_raw_response.stream(
@@ -364,7 +364,7 @@ class TestAsyncExtract:
         stream = await response.parse()
         await stream.close()
 
-    @pytest.mark.skip(reason="Prism doesn't support text/event-stream responses")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_stream(self, async_client: AsyncDocstrange) -> None:
         async with async_client.extract.with_streaming_response.stream(
@@ -378,7 +378,7 @@ class TestAsyncExtract:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_sync(self, async_client: AsyncDocstrange) -> None:
         extract = await async_client.extract.sync(
@@ -386,14 +386,14 @@ class TestAsyncExtract:
         )
         assert_matches_type(ExtractResponse, extract, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_sync_with_all_params(self, async_client: AsyncDocstrange) -> None:
         extract = await async_client.extract.sync(
             output_format="markdown",
             csv_options="",
             custom_instructions="",
-            file=b"raw file contents",
+            file=b"Example data",
             file_base64="",
             file_url="",
             include_metadata="",
@@ -402,7 +402,7 @@ class TestAsyncExtract:
         )
         assert_matches_type(ExtractResponse, extract, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_sync(self, async_client: AsyncDocstrange) -> None:
         response = await async_client.extract.with_raw_response.sync(
@@ -414,7 +414,7 @@ class TestAsyncExtract:
         extract = await response.parse()
         assert_matches_type(ExtractResponse, extract, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_sync(self, async_client: AsyncDocstrange) -> None:
         async with async_client.extract.with_streaming_response.sync(
