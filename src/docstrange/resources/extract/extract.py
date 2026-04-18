@@ -16,6 +16,7 @@ from .results import (
     ResultsResourceWithStreamingResponse,
     AsyncResultsResourceWithStreamingResponse,
 )
+from ..._files import deepcopy_with_paths
 from ..._types import (
     Body,
     Omit,
@@ -27,7 +28,7 @@ from ..._types import (
     omit,
     not_given,
 )
-from ..._utils import extract_files, maybe_transform, deepcopy_minimal, async_maybe_transform
+from ..._utils import extract_files, maybe_transform, async_maybe_transform
 from ..._compat import cached_property
 from ..._resource import SyncAPIResource, AsyncAPIResource
 from ..._response import (
@@ -124,7 +125,7 @@ class ExtractResource(SyncAPIResource):
 
           timeout: Override the client-level default timeout for this request, in seconds
         """
-        body = deepcopy_minimal(
+        body = deepcopy_with_paths(
             {
                 "output_format": output_format,
                 "csv_options": csv_options,
@@ -135,7 +136,8 @@ class ExtractResource(SyncAPIResource):
                 "include_metadata": include_metadata,
                 "json_options": json_options,
                 "prompt_mode": prompt_mode,
-            }
+            },
+            [["file"]],
         )
         files = extract_files(cast(Mapping[str, object], body), paths=[["file"]])
         # It should be noted that the actual Content-Type header that will be
@@ -187,7 +189,7 @@ class ExtractResource(SyncAPIResource):
 
           timeout: Override the client-level default timeout for this request, in seconds
         """
-        body = deepcopy_minimal(
+        body = deepcopy_with_paths(
             {
                 "files": files,
                 "output_format": output_format,
@@ -196,7 +198,8 @@ class ExtractResource(SyncAPIResource):
                 "include_metadata": include_metadata,
                 "json_options": json_options,
                 "prompt_mode": prompt_mode,
-            }
+            },
+            [["files", "<array>"]],
         )
         extracted_files = extract_files(cast(Mapping[str, object], body), paths=[["files", "<array>"]])
         # It should be noted that the actual Content-Type header that will be
@@ -279,7 +282,7 @@ class ExtractResource(SyncAPIResource):
           timeout: Override the client-level default timeout for this request, in seconds
         """
         extra_headers = {"Accept": "text/event-stream", **(extra_headers or {})}
-        body = deepcopy_minimal(
+        body = deepcopy_with_paths(
             {
                 "output_format": output_format,
                 "csv_options": csv_options,
@@ -291,7 +294,8 @@ class ExtractResource(SyncAPIResource):
                 "include_metadata": include_metadata,
                 "json_options": json_options,
                 "prompt_mode": prompt_mode,
-            }
+            },
+            [["file"]],
         )
         files = extract_files(cast(Mapping[str, object], body), paths=[["file"]])
         # It should be noted that the actual Content-Type header that will be
@@ -365,7 +369,7 @@ class ExtractResource(SyncAPIResource):
 
           timeout: Override the client-level default timeout for this request, in seconds
         """
-        body = deepcopy_minimal(
+        body = deepcopy_with_paths(
             {
                 "output_format": output_format,
                 "csv_options": csv_options,
@@ -376,7 +380,8 @@ class ExtractResource(SyncAPIResource):
                 "include_metadata": include_metadata,
                 "json_options": json_options,
                 "prompt_mode": prompt_mode,
-            }
+            },
+            [["file"]],
         )
         files = extract_files(cast(Mapping[str, object], body), paths=[["file"]])
         # It should be noted that the actual Content-Type header that will be
@@ -473,7 +478,7 @@ class AsyncExtractResource(AsyncAPIResource):
 
           timeout: Override the client-level default timeout for this request, in seconds
         """
-        body = deepcopy_minimal(
+        body = deepcopy_with_paths(
             {
                 "output_format": output_format,
                 "csv_options": csv_options,
@@ -484,7 +489,8 @@ class AsyncExtractResource(AsyncAPIResource):
                 "include_metadata": include_metadata,
                 "json_options": json_options,
                 "prompt_mode": prompt_mode,
-            }
+            },
+            [["file"]],
         )
         files = extract_files(cast(Mapping[str, object], body), paths=[["file"]])
         # It should be noted that the actual Content-Type header that will be
@@ -536,7 +542,7 @@ class AsyncExtractResource(AsyncAPIResource):
 
           timeout: Override the client-level default timeout for this request, in seconds
         """
-        body = deepcopy_minimal(
+        body = deepcopy_with_paths(
             {
                 "files": files,
                 "output_format": output_format,
@@ -545,7 +551,8 @@ class AsyncExtractResource(AsyncAPIResource):
                 "include_metadata": include_metadata,
                 "json_options": json_options,
                 "prompt_mode": prompt_mode,
-            }
+            },
+            [["files", "<array>"]],
         )
         extracted_files = extract_files(cast(Mapping[str, object], body), paths=[["files", "<array>"]])
         # It should be noted that the actual Content-Type header that will be
@@ -628,7 +635,7 @@ class AsyncExtractResource(AsyncAPIResource):
           timeout: Override the client-level default timeout for this request, in seconds
         """
         extra_headers = {"Accept": "text/event-stream", **(extra_headers or {})}
-        body = deepcopy_minimal(
+        body = deepcopy_with_paths(
             {
                 "output_format": output_format,
                 "csv_options": csv_options,
@@ -640,7 +647,8 @@ class AsyncExtractResource(AsyncAPIResource):
                 "include_metadata": include_metadata,
                 "json_options": json_options,
                 "prompt_mode": prompt_mode,
-            }
+            },
+            [["file"]],
         )
         files = extract_files(cast(Mapping[str, object], body), paths=[["file"]])
         # It should be noted that the actual Content-Type header that will be
@@ -714,7 +722,7 @@ class AsyncExtractResource(AsyncAPIResource):
 
           timeout: Override the client-level default timeout for this request, in seconds
         """
-        body = deepcopy_minimal(
+        body = deepcopy_with_paths(
             {
                 "output_format": output_format,
                 "csv_options": csv_options,
@@ -725,7 +733,8 @@ class AsyncExtractResource(AsyncAPIResource):
                 "include_metadata": include_metadata,
                 "json_options": json_options,
                 "prompt_mode": prompt_mode,
-            }
+            },
+            [["file"]],
         )
         files = extract_files(cast(Mapping[str, object], body), paths=[["file"]])
         # It should be noted that the actual Content-Type header that will be
